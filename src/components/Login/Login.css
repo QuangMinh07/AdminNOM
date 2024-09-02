@@ -1,0 +1,179 @@
+.imgbackground {
+  width: 100%;
+  height: 700px;
+  object-fit: cover; /* Ensures the image covers the entire area */
+  position: relative;
+}
+
+.containerLogin {
+  width: 100%;
+  height: 700px; /* Matches the height of the image */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  width: 90%;
+  max-width: 1300px;
+  height: auto;
+  padding: 40px;
+  border-radius: 20px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(204, 204, 204, 0.9),
+    rgba(179, 179, 179, 0.9),
+    rgba(166, 166, 166, 0.9),
+    rgba(153, 153, 153, 0.9)
+  );
+  opacity: 0.85;
+  blend-mode: hard-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login-box {
+  display: flex;
+  flex-direction: row;
+}
+
+.login-content {
+  width: 1300px;
+  display: flex;
+  flex-direction: row;
+}
+
+.logo {
+  width: 540px;
+  height: auto;
+  margin-top: -20px;
+}
+
+.Login {
+  font-family: "Petrona", serif; /* Sử dụng font Petrona */
+  font-weight: 400; /* Độ dày của chữ */
+  font-size: 80px; /* Kích thước chữ */
+  line-height: 90.24px; /* Chiều cao dòng */
+  margin-top: -1px;
+}
+
+.textLogin {
+  font-family: "Barlow", sans-serif; /* Sử dụng font Barlow */
+  font-weight: 500; /* Độ dày của chữ */
+  font-size: 20px; /* Kích thước chữ */
+  line-height: 24px; /* Chiều cao dòng */
+  margin-top: -60px;
+}
+
+.lableLogin {
+  font-family: "Petrona", sans-serif; /* Sử dụng font Barlow */
+  font-weight: 400; /* Độ dày của chữ */
+  font-size: 27.21px; /* Kích thước chữ */
+  line-height: 30.69px; /* Chiều cao dòng */
+}
+.login-inputs {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  position: relative;
+  width: 100%;
+}
+
+.input-group1 {
+  margin-bottom: 15px;
+  position: relative;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #e53935;
+  margin-top: 10px;
+  height: 30px;
+}
+
+.input-group1 input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #e53935;
+  margin-top: 10px;
+  height: 30px;
+}
+
+.input-group1 .icon-eye {
+  position: absolute;
+  right: 10px;
+  top: 70%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #e53935;
+  width: 30px;
+  height: 30px;
+}
+
+.buttonlogin {
+  width: 104%;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #e53935;
+  border: none;
+  cursor: pointer;
+  margin-top: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-heading {
+  font-family: "Petrona", serif;
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 33.84px;
+  color: #fff;
+}
+
+.noidunglogin {
+  margin-left: 120px;
+}
+
+/* Style for the username input field */
+.login-username-input {
+  font-family: "Barlow", sans-serif;
+  font-size: 20px; /* Adjust as necessary */
+  line-height: 20px; /* Adjust as necessary */
+  padding: 10px; /* Add padding if necessary */
+}
+
+/* Style for the password input field */
+.login-password-input {
+  font-family: "Barlow", sans-serif;
+  font-size: 20px; /* Adjust as necessary */
+  line-height: 20px; /* Adjust as necessary */
+  padding: 10px; /* Add padding if necessary */
+}
+
+/* Placeholder text style */
+.login-username-input::placeholder,
+.login-password-input::placeholder {
+  font-family: "Petrona", sans-serif;
+  font-weight: 400;
+  font-size: 27.21px;
+  line-height: 30.69px;
+}
