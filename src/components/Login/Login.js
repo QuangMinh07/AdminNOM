@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../Redux/Slice/userSlice";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie"; // Import thư viện js-cookie
 
 const Login = () => {
   const [username, setUserName] = useState("");
@@ -29,15 +30,24 @@ const Login = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        // Hiển thị thông báo lỗi từ backend bằng alert
         alert(data.error || "Login failed");
         throw new Error(data.error || "Login failed");
       }
 
       const { token, admin } = data; // Lấy thông tin từ phản hồi backend
 
-      // Lưu token vào localStorage
-      localStorage.setItem("accessToken", token);
+      // Lưu token và userInfo vào cookie
+      Cookies.set("accessToken", token, { expires: 7 }); // Cookie sẽ hết hạn sau 7 ngày
+      Cookies.set(
+        "userInfo",
+        JSON.stringify({
+          id: admin.id,
+          userName: admin.userName,
+          fullName: admin.fullName,
+          role: admin.role,
+        }),
+        { expires: 7 }
+      );
 
       // Dispatch credentials to redux store
       dispatch(
@@ -52,14 +62,10 @@ const Login = () => {
         })
       );
 
-      // In thông tin phản hồi ra console
-      console.log("Login response:", data);
       navigate("/dashboard");
 
-      // Hiển thị thông báo thành công bằng alert
       alert("Đăng nhập thành công!");
     } catch (error) {
-      // Hiển thị thông báo lỗi nếu có lỗi xảy ra bằng alert
       console.error("Login failed:", error.message);
     }
   };

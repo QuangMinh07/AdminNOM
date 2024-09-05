@@ -1,21 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  accessToken: null,
-  userInfo: null,
+  accessToken: localStorage.getItem("accessToken") || null,
+  userInfo: JSON.parse(localStorage.getItem("userInfo")) || null,
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      state.accessToken = action.payload.accessToken;
-      state.userInfo = action.payload.userInfo;
+      const { accessToken, userInfo } = action.payload;
+
+      state.accessToken = accessToken;
+      state.userInfo = userInfo;
+
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
     },
     logout: (state) => {
       state.accessToken = null;
       state.userInfo = null;
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("userInfo");
     },
   },
 });
@@ -23,3 +30,4 @@ const userSlice = createSlice({
 export const { setCredentials, logout } = userSlice.actions;
 
 export default userSlice.reducer;
+

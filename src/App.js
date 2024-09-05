@@ -1,30 +1,27 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Dashboard from "./components/Dashboard/Dashboard";
+import User from "./components/User/User";
+import Cookies from "js-cookie";
 
-import { jwtDecode } from "jwt-decode";
 import { useSelector, useDispatch } from "react-redux";
 import { setCredentials } from "../src/Redux/Slice/userSlice";
 
 const App = () => {
   const dispatch = useDispatch();
+  
+  // Lấy token từ cookie
+  const isLoggedIn = Cookies.get("accessToken");
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      try {
-        const { exp } = jwtDecode(token);
-        const now = Math.floor(Date.now() / 1000);
-        if (exp > now) {
-          dispatch(setCredentials({ accessToken: token }));
-        } else {
-          localStorage.removeItem("accessToken");
-        }
-      } catch (error) {
-        console.error("Invalid token:", error.message);
-        localStorage.removeItem("accessToken");
-      }
+    // Kiểm tra xem có thông tin lưu trữ trong Cookies hay không và khôi phục lại Redux store
+    const accessToken = Cookies.get("accessToken");
+    const userInfo = Cookies.get("userInfo") ? JSON.parse(Cookies.get("userInfo")) : null;
+
+    if (accessToken && userInfo) {
+      // Dispatch dữ liệu vào Redux
+      dispatch(setCredentials({ accessToken, userInfo }));
     }
   }, [dispatch]);
 
@@ -35,8 +32,10 @@ const App = () => {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          {/* Nếu người dùng đã đăng nhập, chuyển đến Dashboard, nếu không thì đến Login */}
+          <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />} />
+          <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />} />
+          <Route path="/user" element={isLoggedIn ? <User /> : <Navigate to="/" />} />
         </Routes>
       </div>
     </Router>

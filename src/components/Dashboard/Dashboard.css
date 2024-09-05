@@ -46,6 +46,10 @@
   margin-right: 10px;
 }
 
+.sidebar-item.active  {
+  color: #e53935;
+}
+
 .sidebar-item.active a {
   color: #e53935;
 }
@@ -73,16 +77,44 @@
   margin-bottom: 40px;
 }
 
+/* Search Bar with Icon */
+.search-container {
+  position: relative;
+  width: 600px;
+  border: 2px solid #ebebeb; /* Blue border */
+  border-radius: 10px; /* Rounded corners */
+  margin-left: 50px;
+}
+
 .search-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 300px;
+  width: 500px;
+  padding: 15px;
+  font-size: 16px;
+  outline: none;
+  border: none;
+  caret-color: #2D9CDB;
+  border-radius: 10px; 
+}
+
+.search-input::placeholder {
+  color: #b0b0b0; /* Placeholder text color */
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 550px;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #a4a4a4; /* Icon color */
+  width: 24px;
+  height: 24px;
 }
 
 .user-profile {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .user-img {
@@ -113,8 +145,10 @@
 
 /* Content Styles */
 .content {
-  text-align: center;
-  margin-top: 50px;
+  margin-top: 150px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
 .content-title {
@@ -130,20 +164,27 @@
   font-size: 18px;
   color: #a3a3a3;
   margin-top: -25px;
+  width: 480px;
 }
 
 .get-started-btn {
   padding: 10px 20px;
-  border: 2px solid #e53935;
+  border: 1px solid #e53935; /* Red border */
   color: #e53935;
   background-color: #fff;
-  border-radius: 5px;
-  font-size: 1.2rem;
+  border-radius: 15px; /* More rounded corners */
+  font-size: 40px; /* Larger font size */
+  font-family: "Abhaya Libre", serif; /* Using Abhaya Libre font */
+  font-weight: 800; /* Extra bold weight */
   cursor: pointer;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+  transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
+  width: 250px;
+  height: 100px;
 }
 
 .get-started-btn:hover {
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 10px 10px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
 }
 
 .iconchinh {
@@ -162,4 +203,116 @@
   width: 24px;
   height: 24px;
   margin-left: 15px;
+}
+
+.profileModal {
+  position: absolute;
+  top: 12%;
+  left: 84.8%;
+  background-color: white;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.logoutText {
+  font-family: "Jura", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #da4343;
+  margin-top: 15px;
+}
+
+.classLogout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.iconLogout {
+  width: 24px;
+  height: 24px;
+  color: #da4343;
+  transform: rotate(180deg);
+  margin-left: 50px;
+}
+
+/* Container for the whole filter */
+.date-filter-container {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 270px;
+  margin-left: 350px;
+  height: 50px;
+  margin-top: 40px;
+}
+
+/* Icon Wrapper */
+.icon-wrapper {
+  background-color: #e6f3ff; /* Light blue background */
+  padding: 10px;
+  border-radius: 50%; /* Circle shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+/* Calendar Icon */
+.calendar-icon {
+  font-size: 24px;
+  color: #2196f3; /* Blue color */
+}
+
+/* Date Info Container */
+.date-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title Text */
+.filter-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #3d3d3d;
+  margin: 0;
+}
+
+/* Date Range Text */
+.filter-date-range {
+  font-size: 14px;
+  color: #8a8a8a;
+  margin: 0;
+}
+
+/* Dropdown Icon */
+.dropdown-icon {
+  margin-left: auto;
+  color: #8a8a8a;
+  font-size: 14px;
+}
+
+.welcomedate {
+  display: flex;
+  flex-direction: row;
+  margin-top: -50px;
+}
+
+/* CSS cho các giao diện khác */
+.search-container.other-page {
+  background-color: #000;
+}
+
+.search-input.other-page {
+  background-color: #000;
 }
