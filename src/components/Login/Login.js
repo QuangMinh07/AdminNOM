@@ -49,6 +49,18 @@ const Login = () => {
         { expires: 7 }
       );
 
+      // Lưu vào localStorage
+      localStorage.setItem("accessToken", token);
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          id: admin.id,
+          userName: admin.userName,
+          fullName: admin.fullName,
+          role: admin.role,
+        })
+      );
+
       // Dispatch credentials to redux store
       dispatch(
         setCredentials({

@@ -1,0 +1,309 @@
+.custom-modal {
+  width: 400px; /* Wider for better content visibility */
+  background-color: white;
+  padding: 30px; /* Increased padding for a spacious feel */
+  border-radius: 15px; /* Smoother border */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow for a floating effect */
+  text-align: left; /* Align text to the left */
+}
+
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for more focus */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between; /* Better button layout */
+}
+
+.btn-approve1 {
+  background-color: #28a745; /* Success green */
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  border-radius: 8px; /* Rounded buttons */
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-approve1:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.btn-reject {
+  background-color: #dc3545; /* Danger red */
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  border-radius: 8px; /* Rounded buttons */
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-reject:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+/* Modal-specific paragraph styles */
+.modal-info {
+  font-size: 16px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.modal-confirmation {
+  font-size: 18px;
+  margin: 20px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.modal-loading {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.duyetyeucau {
+  text-align: center;
+}
+
+.filter-dropdown {
+  position: absolute; /* Add this line */
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 800px;
+  margin-top: -150px;
+}
+
+.filter-dropdown ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.filter-dropdown li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.filter-dropdown li:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: black; /* Đặt màu chữ là đen */
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+  color: black; /* Giữ màu chữ đen khi hover */
+}
+
+.filter-dropdown1 {
+  position: absolute; /* Add this line */
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 900px;
+  margin-top: -150px;
+}
+
+.filter-dropdown1 ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.filter-dropdown1 li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.filter-dropdown1 li:hover {
+  background-color: #f1f1f1;
+}
+
+.custom-modal1 {
+  background-color: white;
+  padding: 20px;
+  width: 590px;
+  border-radius: 10px;
+  border: 2px solid #cccccc;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  margin: auto;
+  font-family: "Arial", sans-serif;
+}
+
+.custom-modal-overlay1 {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thongtinnguoidung {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: -10px;
+  font-family: "Barlow", sans-serif;
+}
+
+.thongtinnguoidung1 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-family: "Barlow", sans-serif;
+  margin-left: 40px;
+}
+
+.thongtinnguoidung2 {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  font-family: "Barlow", sans-serif;
+  margin-left: 40px;
+  color: #32cd32;
+}
+
+.custom-modal1div {
+  border: 1px solid #9796a1; /* Light blue border */
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.custom-modal1 .red {
+  color: #ff4500;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: "Barlow", sans-serif;
+  margin-left: 20px;
+}
+
+.common-color {
+  color: #32cd32;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: "Barlow", sans-serif;
+  margin-left: 64px;
+}
+
+.custom-modal1 .gray {
+  color: #a9a9a9;
+  margin-left: 30px;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: "Barlow", sans-serif;
+}
+
+.custom-modal1 .gray1 {
+  color: #9796a1;
+  margin-left: 30px;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.custom-modal1 .gray2 {
+  color: #9796a1;
+  margin-left: 95px;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.custom-modal1 .modal-contact {
+  color: #ff4500;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Barlow", sans-serif;
+  margin-left: 40px;
+}
+
+.custom-modal1 .modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.custom-modal1 .btn-approve1 {
+  background-color: #32cd32;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-modal1 .btn-reject {
+  background-color: #ff4500;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-modal1 .close-button {
+  background-color: #cccccc;
+  color: #333;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto 0;
+}
+
+.close-icon {
+  font-size: 20px;
+  cursor: pointer;
+  color: #9796a1;
+  padding: 10px;
+  margin-left: 560px;
+  margin-top: -10px;
+}
+
+.close-icon:hover {
+  color: #ff4500;
+}
+
+.sdtemail {
+  margin-left: 30px !important;
+}
+
+.store {
+  margin-top: -25px;
+  margin-left: 300px;
+}
