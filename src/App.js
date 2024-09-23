@@ -8,6 +8,7 @@ import {
 import Login from "./components/Login/Login";
 import Dashboard from "./components/Dashboard/Dashboard";
 import User from "./components/User/User";
+import Store from "./components/Store/Store";
 import Cookies from "js-cookie";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -52,6 +53,10 @@ const App = () => {
           <Route
             path="/user"
             element={isLoggedIn ? <User /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/store"
+            element={isLoggedIn ? <Store /> : <Navigate to="/" />}
           />
         </Routes>
       </div>

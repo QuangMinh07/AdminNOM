@@ -37,7 +37,11 @@ const Login = () => {
       const { token, admin } = data; // Lấy thông tin từ phản hồi backend
 
       // Lưu token và userInfo vào cookie
-      Cookies.set("accessToken", token, { expires: 7 }); // Cookie sẽ hết hạn sau 7 ngày
+      Cookies.set("accessToken", token, {
+        expires: 7,
+        secure: true,
+        sameSite: "Strict",
+      });
       Cookies.set(
         "userInfo",
         JSON.stringify({

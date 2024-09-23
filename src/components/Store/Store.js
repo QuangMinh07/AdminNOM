@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./User.css";
-import "./Modal.css";
+import "./Store.css";
+import "./ModalStore.css";
 import { FiSliders } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,8 +10,9 @@ import Modal from "react-modal"; // Thêm thư viện react-modal để hiển t
 import api from "../../api"; // Import apiService thay vì axios
 import { Helmet } from "react-helmet";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import moment from 'moment';
 
-const User = () => {
+const Store = () => {
   const user = useSelector((state) => state.user.userInfo);
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -184,7 +185,7 @@ const User = () => {
       </Helmet>
       <div className="header">
         <div>
-          <h1 className="title">User</h1>
+          <h1 className="title">Store</h1>
           <p className="welcome-textuser">
             Hi, {user?.fullName}. Welcome back to NOM Admin!
           </p>
@@ -209,13 +210,13 @@ const User = () => {
             <th>STT</th>
             <th>
               <div className="divdangnhap" onClick={handleSortClick}>
-                <p style={{ width: "80px" }}>Tên đăng nhập</p>
+                <p style={{ width: "80px" }}>Tên cửa hàng</p>
                 <FontAwesomeIcon icon={faSort} className="sort-icon" />
               </div>
             </th>
-            <th>Số điện thoại</th>
-            <th>Địa chỉ</th>
-            <th>Gmail</th>
+            <th>Người sở hửu</th>
+            <th>Số cửa hàng</th>
+            <th>Số sản phẩm</th>
             <th className="filter-header">
               <div className="divdangnhap">
                 <p style={{ width: "80px" }}>Trạng thái</p>
@@ -228,7 +229,7 @@ const User = () => {
             </th>
             <th className="filter-header">
               <div className="divdangnhap">
-                <p style={{ width: "100px" }}>Chuyển đổi </p>
+                <p style={{ width: "100px" }}>Ngày tạo </p>
                 <FontAwesomeIcon
                   icon={faSort}
                   className="sort-icondangnhap"
@@ -250,9 +251,13 @@ const User = () => {
                   </label>
                 </td>
                 <td>{(currentPage - 1) * 10 + index + 1}</td>
-                <td>{user.userName}</td>
-                <td>{user.phoneNumber}</td>
-                <td>{user.address}</td>
+                <td>
+                  {user.storeIds && user.storeIds.length > 0
+                    ? user.storeIds[0].storeName // Lấy tên cửa hàng từ phần tử đầu tiên của mảng stores
+                    : "Không có cửa hàng"}
+                </td>
+                <td>{user.representativeName}</td>
+                <td>{user.storeCount}</td>
                 <td>{user.email}</td>
                 <td className="status">
                   {user.isOnline ? (
@@ -261,22 +266,11 @@ const User = () => {
                     <span className="status offline">Offline</span>
                   )}
                 </td>
-                <td className="role admin">
-                  {user.roleId === "seller" && !user.isApproved ? (
-                    <div
-                      className="approve-button"
-                      style={{ color: "#E53935" }} // Red color for "Chờ duyệt"
-                      onClick={() => openModal(user)}
-                    >
-                      Chờ duyệt
-                    </div>
-                  ) : user.roleId === "customer" ? (
-                    <span style={{ color: "#FFFFFF" }}>Người mua</span> // White color for "Người mua"
-                  ) : (
-                    <span style={{ color: "#1E90FF" }}>Chủ cửa hàng</span> // Blue color for "Chủ cửa hàng"
-                  )}
+                <td>
+                  {user.storeIds && user.storeIds.length > 0
+                    ? moment(user.storeIds[0].createdAt).format("DD/MM/YYYY") // Định dạng ngày tháng năm
+                    : "Không có cửa hàng"}
                 </td>
-
                 <td>
                   <button
                     className="menu-button"
@@ -307,21 +301,20 @@ const User = () => {
         {selectedDetailUser ? (
           <>
             <p className="modal-info">
-              <strong>Tên đại diện: </strong>
+              <strong>Tên đại diện:</strong>{" "}
               {selectedDetailUser.representativeName}
             </p>
             <p className="modal-info">
-              <strong>CCCD/CMND: </strong> {selectedDetailUser.cccd}
+              <strong>CCCD/CMND:</strong> {selectedDetailUser.cccd}
             </p>
             <p className="modal-info">
-              <strong>Địa chỉ cửa hàng: </strong>
-              {selectedDetailUser.storeIds.length > 0
-                ? selectedDetailUser.storeIds[0].storeAddress // Hiển thị địa chỉ của cửa hàng đầu tiên
-                : "Không có thông tin"}
+              <strong>Địa chỉ cửa hàng:</strong>{" "}
+              {selectedDetailUser.stores?.[0]?.storeAddress ||
+                "Không có thông tin"}
             </p>
 
             <p className="modal-info">
-              <strong>Loại kinh doanh: </strong>
+              <strong>Loại kinh doanh:</strong>{" "}
               {selectedDetailUser.businessType}
             </p>
             <p className="modal-confirmation">
@@ -453,4 +446,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Store;

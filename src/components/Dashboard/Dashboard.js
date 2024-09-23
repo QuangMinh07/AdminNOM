@@ -26,6 +26,7 @@ import { logout as logoutAction } from "../../Redux/Slice/userSlice";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import User from "../User/User";
+import Store from "../Store/Store";
 import Cookies from "js-cookie";
 
 const Dashboard = () => {
@@ -68,6 +69,8 @@ const Dashboard = () => {
     switch (content) {
       case "user":
         return <User />;
+      case "store":
+        return <Store />;
 
       default:
         return (
@@ -175,10 +178,10 @@ const Dashboard = () => {
             {isManagementExpanded && (
               <>
                 <li className="sidebar-item indent">
-                  <a href="#">
+                  <div onClick={() => handleContentChange("store")}>
                     <FontAwesomeIcon icon={faStore} className="iconphu" />
                     <span style={{ marginLeft: "10px" }}>Store </span>
-                  </a>
+                  </div>
                 </li>
                 <li className="sidebar-item indent">
                   <a href="#">
