@@ -26,37 +26,6 @@ const Store = () => {
   const [storeCount, setStoreCount] = useState(0); // Thêm state để lưu số lượng cửa hàng
   const [stores, setStores] = useState([]); // Thêm state để lưu danh sách cửa hàng
 
-  const fetchStores = async (page = 1) => {
-    try {
-      const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
-
-      if (!token) {
-        throw new Error("Token không tồn tại");
-      }
-
-      const response = await api.get("/v1/admin/get-all-store", {
-        params: {
-          page: page,
-          limit: 10,
-          sortField: sortField, // Gửi trường sắp xếp
-          sortOrder: sortOrder, // Gửi thứ tự sắp xếp
-        },
-        headers: {
-          Authorization: `Bearer ${token}`, // Gửi token trong headers
-        },
-      });
-
-      if (response.data.success) {
-        setStores(response.data.data); // Lưu danh sách cửa hàng vào state
-        setTotalPages(response.data.totalPages); // Cập nhật tổng số trang
-      } else {
-        console.error("Error fetching stores:", response.data.msg);
-      }
-    } catch (error) {
-      console.error("Error:", error.message);
-    }
-  };
-
   const fetchUsers = async (page = 1) => {
     try {
       const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
@@ -91,6 +60,37 @@ const Store = () => {
     }
   };
 
+  const fetchStores = async (page = 1) => {
+    try {
+      const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
+
+      if (!token) {
+        throw new Error("Token không tồn tại");
+      }
+
+      const response = await api.get("/v1/admin/get-all-store", {
+        params: {
+          page: page,
+          limit: 10,
+          sortField: sortField, // Gửi trường sắp xếp
+          sortOrder: sortOrder, // Gửi thứ tự sắp xếp
+        },
+        headers: {
+          Authorization: `Bearer ${token}`, // Gửi token trong headers
+        },
+      });
+
+      if (response.data.success) {
+        setStores(response.data.data); // Lưu danh sách cửa hàng vào state
+        setTotalPages(response.data.totalPages); // Cập nhật tổng số trang
+      } else {
+        console.error("Error fetching stores:", response.data.msg);
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  };
+
   useEffect(() => {
     fetchUsers(currentPage);
     fetchStores(currentPage); // Gọi API để lấy danh sách cửa hàng
@@ -108,15 +108,23 @@ const Store = () => {
   };
 
   // Hàm mở modal chi tiết người dùng khi nhấn vào dấu ba chấm
-  const openUserDetailModal = async (user) => {
-    setSelectedDetailUser(user); // Lưu thông tin người dùng
+  // Hàm mở modal chi tiết người dùng khi nhấn vào dấu ba chấm
+  const openUserDetailModal = async (user, store) => {
+    // Lưu thông tin người dùng từ user và thông tin cửa hàng từ store
+    setSelectedDetailUser({
+      ...user, // Giữ lại tất cả thông tin từ user
+      storeName: store.storeName, // Lưu tên cửa hàng từ đối tượng store
+      productCount: store.productCount, // Số lượng sản phẩm
+      storeAddress: store.storeAddress, // Ngày tạo của cửa hàng
+    });
+
     setModalUserDetailIsOpen(true); // Mở modal chi tiết
 
     try {
       const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
       const response = await axios.post(
         "http://localhost:5000/v1/admin/getStoreCount",
-        { userId: user._id }, // Truyền đúng userId thay vì selectedUserId
+        { userId: user._id }, // Truyền đúng userId từ user
         {
           headers: {
             Authorization: `Bearer ${token}`, // Gửi token trong header
@@ -229,7 +237,7 @@ const Store = () => {
                 <td className="statusstore">{store.owner.isOnline ? <span className="status online">Đang online</span> : <span className="status offline">Offline</span>}</td>
                 <td>{store.createdAt ? moment(store.createdAt).format("DD/MM/YYYY") : "Không có ngày tạo"}</td>
                 <td>
-                  <button className="menu-buttonstore" onClick={() => openUserDetailModal(store.owner)}>
+                  <button className="menu-buttonstore" onClick={() => openUserDetailModal(store.owner, store)}>
                     ...
                   </button>
                 </td>
@@ -260,6 +268,24 @@ const Store = () => {
               <span className="thongtinnguoidung1store">Số lượng cửa hàng </span>
               <span className="green">{selectedDetailUser.storeCount}</span>
             </p>
+            <div className="custom-modal1divstore">
+              <p>
+                <span className="thongtinnguoidung1store">Tên cửa hàng </span>
+                <span className="red">{selectedDetailUser.storeName}</span>
+              </p>
+              <p>
+                <span className="thongtinnguoidung1store">Địa chỉ </span>
+                <span className="green">{selectedDetailUser.storeAddress}</span>
+              </p>
+              <p>
+                <span className="thongtinnguoidung1store">Số lượng sản phẩm </span>
+                <span className="green">{selectedDetailUser.productCount}</span>
+              </p>
+              <p>
+                <span className="thongtinnguoidung1store">Mô Hình Kinh Doanh </span>
+                <span className="green">{selectedDetailUser.businessType}</span>
+              </p>
+            </div>
           </div>
         )}
       </Modal>
