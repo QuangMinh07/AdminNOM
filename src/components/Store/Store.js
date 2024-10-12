@@ -268,22 +268,22 @@ const Store = () => {
               <span className="thongtinnguoidung1store">Số lượng cửa hàng </span>
               <span className="green">{selectedDetailUser.storeCount}</span>
             </p>
-            <div className="custom-modal1divstore">
+            <div className="custom-modal1divstore1">
               <p>
                 <span className="thongtinnguoidung1store">Tên cửa hàng </span>
-                <span className="red">{selectedDetailUser.storeName}</span>
+                <span className="tencuahang">{selectedDetailUser.storeName}</span>
               </p>
               <p>
                 <span className="thongtinnguoidung1store">Địa chỉ </span>
-                <span className="green">{selectedDetailUser.storeAddress}</span>
+                <span className="stylechung">{selectedDetailUser.storeAddress}</span>
               </p>
               <p>
                 <span className="thongtinnguoidung1store">Số lượng sản phẩm </span>
-                <span className="green">{selectedDetailUser.productCount}</span>
+                <span className="stylechung">{selectedDetailUser.productCount}</span>
               </p>
               <p>
                 <span className="thongtinnguoidung1store">Mô Hình Kinh Doanh </span>
-                <span className="green">{selectedDetailUser.businessType}</span>
+                <span className="stylechung">{selectedDetailUser.businessType}</span>
               </p>
             </div>
           </div>

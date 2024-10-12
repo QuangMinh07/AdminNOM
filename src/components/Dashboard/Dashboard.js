@@ -3,31 +3,16 @@ import "./Dashboard.css";
 import logo1 from "../../image/Logo1.png";
 import userAdmin from "../../image/logo-usr-mini.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHouse,
-  faChartBar,
-  faChartPie,
-  faFileInvoiceDollar,
-  faCog,
-  faStore,
-  faShoppingCart,
-  faBox,
-  faUser,
-  faBell,
-  faEnvelope,
-  faRightFromBracket,
-  faSearch,
-  faCalendarAlt,
-  faChevronDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faChartBar, faChartPie, faFileInvoiceDollar, faCog, faStore, faShoppingCart, faBox, faUser, faBell, faEnvelope, faRightFromBracket, faSearch, faCalendarAlt, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout as logoutAction } from "../../Redux/Slice/userSlice";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import User from "../User/User";
 import Store from "../Store/Store";
 import Cookies from "js-cookie";
+import Order from "../Order/Order";
+import Overview from "../Overview/Overview";
 
 const Dashboard = () => {
   const [isDashboardExpanded, setIsDashboardExpanded] = useState(false);
@@ -71,6 +56,10 @@ const Dashboard = () => {
         return <User />;
       case "store":
         return <Store />;
+      case "order":
+        return <Order />;
+      case "overview":
+        return <Overview />;
 
       default:
         return (
@@ -78,28 +67,18 @@ const Dashboard = () => {
             <div className="welcomedate">
               <div>
                 <p className="content-title">Dashboard</p>
-                <p className="welcome-text">
-                  Hi, {user?.fullName}. Welcome back to NOM Admin!
-                </p>
+                <p className="welcome-text">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
               </div>
 
               <div className="date-filter-container">
                 <div className="icon-wrapper">
-                  <FontAwesomeIcon
-                    icon={faCalendarAlt}
-                    className="calendar-icon"
-                  />
+                  <FontAwesomeIcon icon={faCalendarAlt} className="calendar-icon" />
                 </div>
                 <div className="date-info">
                   <p className="filter-title">Lọc thời gian</p>
-                  <p className="filter-date-range">
-                    17 April 2020 - 21 May 2020
-                  </p>
+                  <p className="filter-date-range">17 April 2020 - 21 May 2020</p>
                 </div>
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  className="dropdown-icon"
-                />
+                <FontAwesomeIcon icon={faChevronDown} className="dropdown-icon" />
               </div>
             </div>
 
@@ -115,10 +94,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <Helmet>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@800&display=swap"
-          rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@800&display=swap" rel="stylesheet" />
       </Helmet>
       {/* Sidebar */}
       <div className="sidebar" setContent={setContent}>
@@ -127,10 +103,7 @@ const Dashboard = () => {
         </div>
         <div className="sidebar-nav">
           <ul>
-            <li
-              className={`sidebar-item ${isDashboardExpanded ? "active" : ""}`}
-              onClick={toggleDashboardItems}
-            >
+            <li className={`sidebar-item ${isDashboardExpanded ? "active" : ""}`} onClick={toggleDashboardItems}>
               <div onClick={() => handleContentChange("dashboard")}>
                 <FontAwesomeIcon icon={faHouse} className="iconchinh" />
                 <span className="textchinh">Dashboard</span>
@@ -140,36 +113,26 @@ const Dashboard = () => {
             {isDashboardExpanded && (
               <>
                 <li className="sidebar-item indent">
-                  <a href="#">
+                  <div onClick={() => handleContentChange("overview")}>
                     <FontAwesomeIcon icon={faChartBar} className="iconphu" />
                     <span style={{ marginLeft: "10px" }}> Overview</span>
-                  </a>
+                  </div>
                 </li>
                 <li className="sidebar-item indent">
                   <a href="#">
                     <FontAwesomeIcon icon={faChartPie} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}>
-                      Charts and Reports
-                    </span>
+                    <span style={{ marginLeft: "10px" }}>Charts and Reports</span>
                   </a>
                 </li>
                 <li className="sidebar-item indent">
                   <a href="#">
-                    <FontAwesomeIcon
-                      icon={faFileInvoiceDollar}
-                      className="iconphu"
-                    />
-                    <span style={{ marginLeft: "10px" }}>
-                      Revenue & Reports
-                    </span>
+                    <FontAwesomeIcon icon={faFileInvoiceDollar} className="iconphu" />
+                    <span style={{ marginLeft: "10px" }}>Revenue & Reports</span>
                   </a>
                 </li>
               </>
             )}
-            <li
-              className={`sidebar-item ${isManagementExpanded ? "active" : ""}`}
-              onClick={toggleManagementItems}
-            >
+            <li className={`sidebar-item ${isManagementExpanded ? "active" : ""}`} onClick={toggleManagementItems}>
               <a href="#">
                 <FontAwesomeIcon icon={faCog} className="iconchinh" />
                 <span className="textchinh">Management </span>
@@ -184,13 +147,10 @@ const Dashboard = () => {
                   </div>
                 </li>
                 <li className="sidebar-item indent">
-                  <a href="#">
-                    <FontAwesomeIcon
-                      icon={faShoppingCart}
-                      className="iconphu"
-                    />
+                  <div onClick={() => handleContentChange("order")}>
+                    <FontAwesomeIcon icon={faShoppingCart} className="iconphu" />
                     <span style={{ marginLeft: "10px" }}>Order </span>
-                  </a>
+                  </div>
                 </li>
                 <li className="sidebar-item indent">
                   <a href="#">
@@ -213,9 +173,7 @@ const Dashboard = () => {
                 <li className="sidebar-item indent">
                   <a href="#">
                     <FontAwesomeIcon icon={faEnvelope} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}>
-                      Support & Communication
-                    </span>
+                    <span style={{ marginLeft: "10px" }}>Support & Communication</span>
                   </a>
                 </li>
               </>
@@ -228,18 +186,8 @@ const Dashboard = () => {
       <div className="main-content">
         {/* Top Bar */}
         <div className="top-bar">
-          <div
-            className={`search-container ${
-              content === "dashboard" ? "" : "other-page"
-            }`}
-          >
-            <input
-              type="text"
-              className={`search-input ${
-                content === "dashboard" ? "" : "other-page"
-              }`}
-              placeholder="Search here"
-            />
+          <div className={`search-container ${content === "dashboard" ? "" : "other-page"}`}>
+            <input type="text" className={`search-input ${content === "dashboard" ? "" : "other-page"}`} placeholder="Search here" />
             <FontAwesomeIcon icon={faSearch} className="search-icon" />
           </div>
 
@@ -252,10 +200,7 @@ const Dashboard = () => {
               <div className="profileModal">
                 <div className="classLogout" onClick={handleLogout}>
                   <p className="logoutText">Đăng xuất</p>
-                  <FontAwesomeIcon
-                    icon={faRightFromBracket}
-                    className="iconLogout"
-                  />
+                  <FontAwesomeIcon icon={faRightFromBracket} className="iconLogout" />
                 </div>
               </div>
             )}
