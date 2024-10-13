@@ -85,76 +85,64 @@ const User = () => {
 
   const handleApprove = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
-      console.log("Token from localStorage:", token);
-      const response = await axios.post(
-        "http://localhost:5000/v1/admin/approve-seller",
-        { userId: selectedUserId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      let apiEndpoint = "";
+
+      if (selectedDetailUser.roleId === "seller") {
+        apiEndpoint = "/v1/admin/approve-seller";
+      } else if (selectedDetailUser.roleId === "shipper") {
+        apiEndpoint = "/v1/admin/approve-shipper";
+      }
+
+      const response = await api.post(apiEndpoint, { userId: selectedUserId });
 
       if (response.data.message) {
         alert("Người dùng đã được duyệt thành công!");
-        fetchUsers(); // Refresh the user list after approving
+        fetchUsers(); // Làm mới danh sách người dùng
         closeModal(); // Đóng modal
       }
     } catch (error) {
-      console.error("Error approving seller:", error.message);
+      console.error("Error approving user:", error.message);
       alert("Lỗi khi duyệt người dùng");
     }
   };
 
   const handleReject = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await axios.post(
-        "http://localhost:5000/v1/admin/reject-seller",
-        { userId: selectedUserId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      let apiEndpoint = "";
+
+      if (selectedDetailUser.roleId === "seller") {
+        apiEndpoint = "/v1/admin/reject-seller";
+      } else if (selectedDetailUser.roleId === "shipper") {
+        apiEndpoint = "/v1/admin/reject-shipper";
+      }
+
+      const response = await api.post(apiEndpoint, { userId: selectedUserId });
 
       if (response.data.message) {
         alert("Người dùng đã bị từ chối và chuyển thành customer.");
-        fetchUsers(); // Refresh the user list after rejecting
+        fetchUsers(); // Làm mới danh sách người dùng
         closeModal(); // Đóng modal
       }
     } catch (error) {
-      console.error("Error rejecting seller:", error.message);
+      console.error("Error rejecting user:", error.message);
       alert("Lỗi khi từ chối người dùng");
     }
   };
 
   // Hàm mở modal chi tiết người dùng khi nhấn vào dấu ba chấm
   const openUserDetailModal = async (user) => {
-    setSelectedDetailUser(user); // Lưu thông tin người dùng
-    setModalUserDetailIsOpen(true); // Mở modal chi tiết
+    setSelectedDetailUser(user);
+    setModalUserDetailIsOpen(true);
 
     try {
-      const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
-      const response = await axios.post(
-        "http://localhost:5000/v1/admin/getStoreCount",
-        { userId: user._id }, // Truyền đúng userId thay vì selectedUserId
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Gửi token trong header
-          },
-        }
-      );
+      const response = await api.post("/v1/admin/getStoreCount", { userId: user._id });
 
       if (response.status === 200) {
-        setStoreCount(response.data.storeCount); // Cập nhật số lượng cửa hàng
+        setStoreCount(response.data.storeCount);
       }
     } catch (error) {
       console.error("Lỗi khi lấy số lượng cửa hàng:", error.message);
-      setStoreCount(0); // Đặt về 0 nếu có lỗi xảy ra
+      setStoreCount(0);
     }
   };
 
@@ -177,17 +165,12 @@ const User = () => {
   return (
     <div className="user-container">
       <Helmet>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap" rel="stylesheet" />
       </Helmet>
       <div className="header">
         <div>
           <h1 className="title">User</h1>
-          <p className="welcome-textuser">
-            Hi, {user?.fullName}. Welcome back to NOM Admin!
-          </p>
+          <p className="welcome-textuser">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
         </div>
         <div className="button-group">
           <button className="btn btn-deleteuser">Xoá</button>
@@ -219,21 +202,13 @@ const User = () => {
             <th className="filter-header">
               <div className="divdangnhap">
                 <p style={{ width: "80px" }}>Trạng thái</p>
-                <FontAwesomeIcon
-                  icon={faSort}
-                  className="sort-icondangnhap"
-                  onClick={() => setShowStatusFilter(!showStatusFilter)}
-                />
+                <FontAwesomeIcon icon={faSort} className="sort-icondangnhap" onClick={() => setShowStatusFilter(!showStatusFilter)} />
               </div>
             </th>
             <th className="filter-header">
               <div className="divdangnhap">
                 <p style={{ width: "100px" }}>Chuyển đổi </p>
-                <FontAwesomeIcon
-                  icon={faSort}
-                  className="sort-icondangnhap"
-                  onClick={() => setShowRoleFilter(!showRoleFilter)}
-                />
+                <FontAwesomeIcon icon={faSort} className="sort-icondangnhap" onClick={() => setShowRoleFilter(!showRoleFilter)} />
               </div>
             </th>
             <th></th>
@@ -254,13 +229,7 @@ const User = () => {
                 <td>{user.phoneNumber}</td>
                 <td>{user.address}</td>
                 <td>{user.email}</td>
-                <td className="status">
-                  {user.isOnline ? (
-                    <span className="status online">Đang online</span>
-                  ) : (
-                    <span className="status offline">Offline</span>
-                  )}
-                </td>
+                <td className="status">{user.isOnline ? <span className="status online">Đang online</span> : <span className="status offline">Offline</span>}</td>
                 <td className="role admin">
                   {user.roleId === "seller" && !user.isApproved ? (
                     <div
@@ -272,16 +241,23 @@ const User = () => {
                     </div>
                   ) : user.roleId === "customer" ? (
                     <span style={{ color: "#FFFFFF" }}>Người mua</span> // White color for "Người mua"
+                  ) : user.roleId === "shipper" && !user.isApproved ? ( // Điều kiện cho "Chờ duyệt" cho shipper
+                    <div
+                      className="approve-button"
+                      style={{ color: "#E53935" }} // Red color for "Chờ duyệt"
+                      onClick={() => openModal(user)}
+                    >
+                      Chờ duyệt (Shipper)
+                    </div>
+                  ) : user.roleId === "shipper" ? (
+                    <span style={{ color: "#32CD32" }}>Người giao hàng</span> // Green color for "Người giao hàng"
                   ) : (
                     <span style={{ color: "#1E90FF" }}>Chủ cửa hàng</span> // Blue color for "Chủ cửa hàng"
                   )}
                 </td>
 
                 <td>
-                  <button
-                    className="menu-button"
-                    onClick={() => openUserDetailModal(user)}
-                  >
+                  <button className="menu-button" onClick={() => openUserDetailModal(user)}>
                     ...
                   </button>
                 </td>
@@ -295,38 +271,59 @@ const User = () => {
         </tbody>
       </table>
 
-      {/* Modal for approving or rejecting seller */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        className="custom-modal"
-        overlayClassName="custom-modal-overlay"
-        shouldCloseOnOverlayClick={true}
-      >
-        <h2 className="duyetyeucau">Duyệt yêu cầu người bán</h2>
+      {/* Modal for approving or rejecting user */}
+      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="custom-modal" overlayClassName="custom-modal-overlay" shouldCloseOnOverlayClick={true}>
+        <h2 className="duyetyeucau">{selectedDetailUser?.roleId === "seller" ? "Duyệt yêu cầu người bán" : selectedDetailUser?.roleId === "shipper" ? "Duyệt yêu cầu người giao hàng" : "Duyệt yêu cầu người dùng"}</h2>
+
         {selectedDetailUser ? (
           <>
+            {/* Hiển thị thông tin dựa theo roleId */}
             <p className="modal-info">
-              <strong>Tên đại diện: </strong>
-              {selectedDetailUser.representativeName}
-            </p>
-            <p className="modal-info">
-              <strong>CCCD/CMND: </strong> {selectedDetailUser.cccd}
-            </p>
-            <p className="modal-info">
-              <strong>Địa chỉ cửa hàng: </strong>
-              {selectedDetailUser.storeIds.length > 0
-                ? selectedDetailUser.storeIds[0].storeAddress // Hiển thị địa chỉ của cửa hàng đầu tiên
-                : "Không có thông tin"}
+              <strong>{selectedDetailUser.roleId === "seller" ? "Tên đại diện: " : "Họ và Tên: "}</strong>
+              {selectedDetailUser.roleId === "seller" ? selectedDetailUser.representativeName : selectedDetailUser.fullName}
             </p>
 
             <p className="modal-info">
-              <strong>Loại kinh doanh: </strong>
-              {selectedDetailUser.businessType}
+              <strong>CCCD/CMND: </strong>
+              {selectedDetailUser.cccd || "Không có thông tin"}
             </p>
-            <p className="modal-confirmation">
-              Bạn có muốn duyệt yêu cầu này không?
+
+            <p className="modal-info">
+              <strong>{selectedDetailUser.roleId === "seller" ? "Địa chỉ cửa hàng: " : "Địa chỉ: "}</strong>
+              {selectedDetailUser.roleId === "seller" ? (selectedDetailUser.storeIds.length > 0 ? selectedDetailUser.storeIds[0].storeAddress : "Không có thông tin") : selectedDetailUser.address || "Không có thông tin"}
             </p>
+
+            {/* Thông tin bổ sung cho seller */}
+            {selectedDetailUser.roleId === "seller" && (
+              <>
+                <p className="modal-info">
+                  <strong>Loại kinh doanh: </strong>
+                  {selectedDetailUser.businessType || "Không có thông tin"}
+                </p>
+              </>
+            )}
+
+            {/* Thông tin bổ sung cho shipper */}
+            {selectedDetailUser.roleId === "shipper" && (
+              <>
+                <p className="modal-info">
+                  <strong>Mã số xe: </strong>
+                  {selectedDetailUser.shipperInfo?.vehicleNumber || "Không có thông tin"}
+                </p>
+                <p className="modal-info">
+                  <strong>Địa chỉ tạm trú: </strong>
+                  {selectedDetailUser.shipperInfo?.temporaryAddress || "Không có thông tin"}
+                </p>
+                <p className="modal-info">
+                  <strong>Số tài khoản ngân hàng: </strong>
+                  {selectedDetailUser.shipperInfo?.bankAccount || "Không có thông tin"}
+                </p>
+              </>
+            )}
+
+            <p className="modal-confirmation">Bạn có muốn duyệt yêu cầu này không?</p>
+
+            {/* Actions for approval or rejection */}
             <div className="modal-actions">
               <button className="btn-approve1" onClick={handleApprove}>
                 Đồng ý
@@ -342,45 +339,44 @@ const User = () => {
       </Modal>
 
       {/* Modal hiển thị chi tiết người dùng */}
-      <Modal
-        isOpen={modalUserDetailIsOpen}
-        onRequestClose={closeUserDetailModal}
-        className="custom-modal1"
-        overlayClassName="custom-modal-overlay1"
-        shouldCloseOnOverlayClick={true}
-      >
+      <Modal isOpen={modalUserDetailIsOpen} onRequestClose={closeUserDetailModal} className="custom-modal1" overlayClassName="custom-modal-overlay1" shouldCloseOnOverlayClick={true}>
         <span className="close-icon" onClick={closeUserDetailModal}>
           <FontAwesomeIcon icon={faCircleXmark} />
         </span>
         {selectedDetailUser && (
           <div className="custom-modal1div">
             <h2 className="thongtinnguoidung">Thông tin chi tiết người dùng</h2>
-            <p>
-              <span className="thongtinnguoidung1">Tên người dùng </span>
-              <span className="red">{selectedDetailUser.userName}</span>
-            </p>
+
+            {/* Thêm đoạn code hiển thị trạng thái ở đây */}
             <p>
               <span className="thongtinnguoidung1">Trạng thái </span>
-              <span className="common-color">
-                {selectedDetailUser.roleId === "customer"
-                  ? "Người mua"
-                  : selectedDetailUser.roleId === "seller"
-                  ? "Người bán"
-                  : "Người giao hàng"}
-              </span>
+              <span className="common-color">{selectedDetailUser.roleId === "customer" ? "Người mua" : selectedDetailUser.roleId === "seller" ? "Người bán" : "Người giao hàng"}</span>
               {selectedDetailUser.roleId === "seller" && (
                 <p className="store">
                   <span className="thongtinnguoidung1">Số cửa hàng </span>
                   <span className="thongtinnguoidung2">{storeCount}</span>
                 </p>
               )}
+              {selectedDetailUser.roleId === "shipper" && (
+                <p className="store">
+                  <span className="thongtinnguoidung4">Mã số xe </span>
+                  <span className="thongtinnguoidung3">{selectedDetailUser.shipperInfo?.vehicleNumber}</span>
+                </p>
+              )}
             </p>
 
+            {/* Các thông tin khác của người dùng */}
             <p>
-              <span className="thongtinnguoidung1">Địa chỉ </span>
-              <span className="gray">{selectedDetailUser.address}</span>
+              <span className="thongtinnguoidung1">Tên người dùng </span>
+              <span className="red">{selectedDetailUser.fullName}</span>
             </p>
-
+            {selectedDetailUser.roleId === "shipper" && (
+              <p>
+                <span className="thongtinnguoidung1">Địa chỉ </span>
+                <span className="gray">{selectedDetailUser.shipperInfo?.temporaryAddress}</span>
+              </p>
+            )}
+            {/* Thông tin liên hệ */}
             <p className="modal-contact">Liên hệ</p>
             <p className="sdtemail">
               <span className="thongtinnguoidung1">Số điện thoại </span>
@@ -397,28 +393,16 @@ const User = () => {
       {showRoleFilter && (
         <div className="filter-dropdown1">
           <ul>
-            <li
-              className="dropdown-item"
-              onClick={() => handleRoleFilter(null)}
-            >
+            <li className="dropdown-item" onClick={() => handleRoleFilter(null)}>
               Tất cả
             </li>
-            <li
-              className="dropdown-item"
-              onClick={() => handleRoleFilter("customer")}
-            >
+            <li className="dropdown-item" onClick={() => handleRoleFilter("customer")}>
               Người mua
             </li>
-            <li
-              className="dropdown-item"
-              onClick={() => handleRoleFilter("seller")}
-            >
+            <li className="dropdown-item" onClick={() => handleRoleFilter("seller")}>
               Người bán
             </li>
-            <li
-              className="dropdown-item"
-              onClick={() => handleRoleFilter("shipper")}
-            >
+            <li className="dropdown-item" onClick={() => handleRoleFilter("shipper")}>
               Người giao hàng
             </li>
           </ul>
@@ -428,22 +412,13 @@ const User = () => {
       {showStatusFilter && (
         <div className="filter-dropdown">
           <ul>
-            <li
-              className="dropdown-item"
-              onClick={() => handleStatusFilter(null)}
-            >
+            <li className="dropdown-item" onClick={() => handleStatusFilter(null)}>
               Tất cả
             </li>
-            <li
-              className="dropdown-item"
-              onClick={() => handleStatusFilter(true)}
-            >
+            <li className="dropdown-item" onClick={() => handleStatusFilter(true)}>
               Đang online
             </li>
-            <li
-              className="dropdown-item"
-              onClick={() => handleStatusFilter(false)}
-            >
+            <li className="dropdown-item" onClick={() => handleStatusFilter(false)}>
               Offline
             </li>
           </ul>

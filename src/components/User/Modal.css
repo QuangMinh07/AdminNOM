@@ -197,6 +197,23 @@
   color: #32cd32;
 }
 
+.thongtinnguoidung3 {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  font-family: "Barlow", sans-serif;
+  margin-left: 10px;
+  color: #32cd32;
+}
+
+.thongtinnguoidung4 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-family: "Barlow", sans-serif;
+  margin-left: 50px;
+}
+
 .custom-modal1div {
   border: 1px solid #9796a1; /* Light blue border */
   border-radius: 20px;

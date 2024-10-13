@@ -1,0 +1,221 @@
+.user-containerstore {
+  padding: 20px;
+}
+
+.headerstore {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.titlestore {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  font-size: 33px;
+  color: #e53935;
+  margin-top: -15px;
+}
+
+.welcome-textstore {
+  font-family: "Barlow", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: #a3a3a3;
+  width: 480px;
+  margin-top: -15px;
+}
+
+.button-groupstore {
+  display: flex;
+  gap: 10px;
+}
+
+.btnstore {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-deletestore {
+  background-color: #202020;
+  color: white;
+  border: none;
+  width: 200px;
+  height: 50px;
+  border-radius: 12px;
+}
+
+.btn-approvestore {
+  background-color: #202020;
+  color: white;
+  border: none;
+  width: 200px;
+  height: 50px;
+  border-radius: 12px;
+}
+
+.user-tablestore {
+  width: 100%;
+  color: white;
+  border-radius: 12px;
+  border-spacing: 0; /* Remove spacing between table cells */
+  overflow: hidden; /* Ensure rounded corners show */
+  background-color: #202020;
+}
+
+.user-tablestore th {
+  padding: 10px;
+  text-align: center;
+  background-color: #202020;
+}
+
+.user-tablestore td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #2b2b2b; /* Border between rows and columns */
+  height: 50px;
+}
+
+.sort-iconstore {
+  margin-left: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.sort-icondangnhapstore {
+  margin-left: 5px;
+  cursor: pointer;
+  margin-top: 21px;
+}
+
+.statusstore.online {
+  color: limegreen;
+}
+
+.statusstore.offline {
+  color: orange;
+}
+
+.menu-buttonstore {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.filter-icon-containerstore {
+  background-color: #202020;
+  padding: 10px;
+  width: 35px;
+  height: 30px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-iconstore {
+  color: #7a8699;
+  font-size: 24px;
+  cursor: pointer;
+  transform: rotate(90deg); /* Rotate the icon 90 degrees */
+}
+
+.user-tablestore thead {
+  border-radius: 12px 12px 0 0; /* Apply border radius to the top corners */
+}
+
+.user-tablestore tbody {
+  border-radius: 0 0 12px 12px; /* Apply border radius to the bottom corners */
+  background-color: #202020;
+}
+
+.user-tablestore tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 12px; /* Bottom left corner */
+}
+
+.user-tablestore tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 12px; /* Bottom right corner */
+}
+
+.checkboxstore {
+  border-width: 2px;
+  border-radius: 3px;
+  background-color: #202020;
+}
+
+/* Checkbox container */
+.custom-checkboxstore {
+  display: inline-block;
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  font-size: 22px;
+  user-select: none;
+}
+
+/* Hide default checkbox */
+.custom-checkboxstore input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkmark */
+.checkmarkstore {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #202020;
+  border: 2px solid white; /* Set border color */
+  border-radius: 3px;
+}
+
+/* Change background color when the checkbox is checked */
+.custom-checkboxstore input:checked ~ .checkmark {
+  background-color: #e53935; /* Checked background color */
+  border-color: #e53935; /* Border color when checked */
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmarkstore:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.custom-checkboxstore input:checked ~ .checkmarkstore:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.custom-checkboxstore .checkmarkstore:after {
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.checktitlestore {
+  position: absolute;
+  top: -15px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #202020;
+  border: 2px solid white; /* Set border color */
+  border-radius: 3px;
+}
+
+.divdangnhapstore {
+  display: flex;
+  flex-direction: row;
+}

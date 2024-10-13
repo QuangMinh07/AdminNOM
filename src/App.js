@@ -7,6 +7,7 @@ import Store from "./components/Store/Store";
 import Overview from "./components/Overview/Overview";
 import Cookies from "js-cookie";
 import Order from "./components/Order/Order";
+import Product from "./components/Product/Product";
 import { useSelector, useDispatch } from "react-redux";
 import { setCredentials } from "../src/Redux/Slice/userSlice";
 
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/store" element={isLoggedIn ? <Store /> : <Navigate to="/" />} />
           <Route path="/order" element={isLoggedIn ? <Order /> : <Navigate to="/" />} />
           <Route path="/overview" element={isLoggedIn ? <Overview /> : <Navigate to="/" />} />
+          <Route path="/product" element={isLoggedIn ? <Product /> : <Navigate to="/" />} />
         </Routes>
       </div>
     </Router>

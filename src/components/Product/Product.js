@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./Store.css";
-import "./ModalStore.css";
+import "./Product.css";
+import "./ModalProduct.css";
 import { FiSliders } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,7 +11,7 @@ import { Helmet } from "react-helmet";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import moment from "moment";
 
-const Store = () => {
+const Product = () => {
   const user = useSelector((state) => state.user.userInfo);
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -150,12 +149,14 @@ const Store = () => {
       </Helmet>
       <div className="headerstore">
         <div>
-          <h1 className="titlestore">Store</h1>
+          <h1 className="titlestore">Product
+            
+          </h1>
           <p className="welcome-textstore">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
         </div>
         <div className="button-groupstore">
           <button className="btnstore btn-deletestore">Xoá</button>
-          <button className="btnstore btn-approvestore">Hủy chuyển đổi</button>
+          <button className="btnstore btn-approvestore">Gửi cảnh báo</button>
           <div className="filter-icon-containerstore">
             <FiSliders className="filter-iconstore" />
           </div>
@@ -173,25 +174,25 @@ const Store = () => {
             <th>STT</th>
             <th>
               <div className="divdangnhapstore" onClick={() => handleSortClick("storeName")}>
-                <p style={{ width: "130px" }}>Tên cửa hàng</p>
+                <p style={{ width: "130px" }}>Tên Sản Phẩm</p>
                 <FontAwesomeIcon icon={faSort} className="sort-iconstore" />
               </div>
             </th>
             <th>
               <div className="divdangnhap" onClick={() => handleSortClick("owner.representativeName")}>
-                <p style={{ width: "130px" }}>Người sở hữu</p>
+                <p style={{ width: "130px" }}>Tên nhóm món</p>
                 <FontAwesomeIcon icon={faSort} className="sort-iconstore" />
               </div>
             </th>
             <th>
               <div className="divdangnhap" onClick={() => handleSortClick("owner.storeCount")}>
-                <p style={{ width: "130px" }}>Số cửa hàng</p>
+                <p style={{ width: "130px" }}>Giá Món ăn</p>
                 <FontAwesomeIcon icon={faSort} className="sort-iconstore" />
               </div>
             </th>
             <th>
               <div className="divdangnhap" onClick={() => handleSortClick("productCount")}>
-                <p style={{ width: "130px" }}>Số sản phẩm</p>
+                <p style={{ width: "130px" }}>Tên Cửa Hàng</p>
                 <FontAwesomeIcon icon={faSort} className="sort-iconstore" />
               </div>
             </th>
@@ -203,7 +204,7 @@ const Store = () => {
             </th>
             <th className="filter-header">
               <div className="divdangnhap" onClick={() => handleSortClick("createdAt")}>
-                <p style={{ width: "100px" }}>Ngày tạo</p>
+                <p style={{ width: "100px" }}>Xem Thêm</p>
                 <FontAwesomeIcon icon={faSort} className="sort-icondangnhapstore" />
               </div>
             </th>
@@ -300,4 +301,4 @@ const Store = () => {
   );
 };
 
-export default Store;
+export default Product;

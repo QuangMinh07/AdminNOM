@@ -13,6 +13,7 @@ import Store from "../Store/Store";
 import Cookies from "js-cookie";
 import Order from "../Order/Order";
 import Overview from "../Overview/Overview";
+import Product from "../Product/Product";
 
 const Dashboard = () => {
   const [isDashboardExpanded, setIsDashboardExpanded] = useState(false);
@@ -60,7 +61,8 @@ const Dashboard = () => {
         return <Order />;
       case "overview":
         return <Overview />;
-
+      case "product":
+        return <Product />;
       default:
         return (
           <div>
@@ -153,10 +155,10 @@ const Dashboard = () => {
                   </div>
                 </li>
                 <li className="sidebar-item indent">
-                  <a href="#">
+                  <div onClick={() => handleContentChange("product")}>
                     <FontAwesomeIcon icon={faBox} className="iconphu" />
                     <span style={{ marginLeft: "10px" }}>Product </span>
-                  </a>
+                  </div>
                 </li>
                 <li className="sidebar-item indent">
                   <div onClick={() => handleContentChange("user")}>
