@@ -81,17 +81,21 @@
   text-align: center;
 }
 
+.filter-dropdown li:hover {
+  background-color: #f1f1f1;
+}
 .filter-dropdown {
-  position: absolute; /* Add this line */
+  position: absolute;
   background-color: white;
   border: 1px solid #ccc;
   z-index: 1000;
   width: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 800px;
-  margin-top: -150px;
+  top: 65%; /* Điều này đảm bảo dropdown nằm ngay dưới chữ "Trạng thái" */
+  left: 130; /* Canh trái theo thành phần chứa */
+}
+
+.filter-header {
+  position: relative; /* Thêm dòng này để vị trí tuyệt đối của dropdown được tính dựa trên phần tử này */
 }
 
 .filter-dropdown ul {
@@ -121,16 +125,13 @@
 }
 
 .filter-dropdown1 {
-  position: absolute; /* Add this line */
+  position: absolute;
   background-color: white;
   border: 1px solid #ccc;
   z-index: 1000;
   width: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 900px;
-  margin-top: -150px;
+  top: 65%; /* Điều này đảm bảo dropdown nằm ngay dưới chữ "Trạng thái" */
+  left: 130; /* Canh trái theo thành phần chứa */
 }
 
 .filter-dropdown1 ul {

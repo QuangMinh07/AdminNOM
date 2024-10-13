@@ -1,28 +1,25 @@
-.filter-dropdownstore {
-  position: absolute; /* Add this line */
+.filter-dropdownproduct {
+  position: absolute;
   background-color: white;
   border: 1px solid #ccc;
   z-index: 1000;
   width: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 800px;
-  margin-top: -150px;
+  top: 40%; /* Điều này đảm bảo dropdown nằm ngay dưới chữ "Trạng thái" */
+  left: 78%; /* Canh trái theo thành phần chứa */
 }
 
-.filter-dropdownstore ul {
+.filter-dropdownproduct ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-.filter-dropdownstore li {
+.filter-dropdownproduct li {
   padding: 8px 12px;
   cursor: pointer;
 }
 
-.filter-dropdownstore li:hover {
+.filter-dropdownproduct li:hover {
   background-color: #f1f1f1;
 }
 

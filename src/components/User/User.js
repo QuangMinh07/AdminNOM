@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./User.css";
 import "./Modal.css";
 import { FiSliders } from "react-icons/fi";
@@ -205,6 +204,7 @@ const User = () => {
                 <FontAwesomeIcon icon={faSort} className="sort-icondangnhap" onClick={() => setShowStatusFilter(!showStatusFilter)} />
               </div>
             </th>
+
             <th className="filter-header">
               <div className="divdangnhap">
                 <p style={{ width: "100px" }}>Chuyển đổi </p>

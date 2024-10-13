@@ -13,77 +13,44 @@ import moment from "moment";
 
 const Product = () => {
   const user = useSelector((state) => state.user.userInfo);
-  const [users, setUsers] = useState([]);
+  const [foods, setFoods] = useState([]); // State để lưu danh sách món ăn
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [modalUserDetailIsOpen, setModalUserDetailIsOpen] = useState(false); // Trạng thái modal chi tiết người dùng
-  const [selectedDetailUser, setSelectedDetailUser] = useState(null); // Lưu thông tin người dùng được chọn để hiển thị chi tiết
-  const [sortField, setSortField] = useState("userName"); // Mặc định sắp xếp theo tên
+  const [modalUserDetailIsOpen, setModalUserDetailIsOpen] = useState(false); // Trạng thái modal chi tiết món ăn
+  const [selectedDetailFood, setSelectedDetailFood] = useState(null); // Lưu thông tin món ăn được chọn để hiển thị chi tiết
+  const [sortField, setSortField] = useState("foodName"); // Mặc định sắp xếp theo tên món ăn
   const [sortOrder, setSortOrder] = useState("asc"); // Mặc định sắp xếp tăng dần
-  const [filterStatus, setFilterStatus] = useState(null); // Lọc theo trạng thái (online, offline)
+  const [filterStatus, setFilterStatus] = useState(null); // Lọc theo trạng thái (Đang bán, Ngừng bán)
   const [showStatusFilter, setShowStatusFilter] = useState(false);
-  const [storeCount, setStoreCount] = useState(0); // Thêm state để lưu số lượng cửa hàng
-  const [stores, setStores] = useState([]); // Thêm state để lưu danh sách cửa hàng
 
-  const fetchUsers = async (page = 1) => {
+  // API để lấy danh sách món ăn
+  const fetchFoods = async (page = 1) => {
     try {
       const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
-      console.log("Token from localStorage:", token);
 
       if (!token) {
         throw new Error("Token không tồn tại");
       }
 
-      const response = await api.get("/v1/admin/get-all-user", {
+      const response = await api.get("/v1/food/getAllfood", {
         params: {
           page: page,
           limit: 10,
           sortField: sortField,
           sortOrder: sortOrder,
-          isOnline: filterStatus,
+          isAvailable: filterStatus,
         },
         headers: {
           Authorization: `Bearer ${token}`, // Gửi token trong headers
         },
       });
 
-      if (response.data.success) {
-        setUsers(response.data.data);
-        setTotalPages(response.data.totalPages);
-        setCurrentPage(response.data.page);
-      } else {
-        console.error("Error fetching users:", response.data.msg);
-      }
-    } catch (error) {
-      console.error("Error:", error.message);
-    }
-  };
-
-  const fetchStores = async (page = 1) => {
-    try {
-      const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
-
-      if (!token) {
-        throw new Error("Token không tồn tại");
-      }
-
-      const response = await api.get("/v1/admin/get-all-store", {
-        params: {
-          page: page,
-          limit: 10,
-          sortField: sortField, // Gửi trường sắp xếp
-          sortOrder: sortOrder, // Gửi thứ tự sắp xếp
-        },
-        headers: {
-          Authorization: `Bearer ${token}`, // Gửi token trong headers
-        },
-      });
-
-      if (response.data.success) {
-        setStores(response.data.data); // Lưu danh sách cửa hàng vào state
+      if (response.data.foods) {
+        setFoods(response.data.foods); // Lưu danh sách món ăn vào state
         setTotalPages(response.data.totalPages); // Cập nhật tổng số trang
+        setCurrentPage(response.data.currentPage); // Cập nhật trang hiện tại
       } else {
-        console.error("Error fetching stores:", response.data.msg);
+        console.error("Error fetching foods:", response.data.msg);
       }
     } catch (error) {
       console.error("Error:", error.message);
@@ -91,11 +58,10 @@ const Product = () => {
   };
 
   useEffect(() => {
-    fetchUsers(currentPage);
-    fetchStores(currentPage); // Gọi API để lấy danh sách cửa hàng
+    fetchFoods(currentPage); // Gọi API để lấy danh sách món ăn
   }, [currentPage, sortField, sortOrder, filterStatus]);
 
-  // Hàm xử lý sắp xếp tên đăng nhập
+  // Hàm xử lý sắp xếp tên món ăn
   const handleSortClick = (field) => {
     setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc")); // Đảo ngược thứ tự sắp xếp
     setSortField(field); // Cập nhật trường sắp xếp
@@ -106,40 +72,29 @@ const Product = () => {
     setShowStatusFilter(false);
   };
 
-  // Hàm mở modal chi tiết người dùng khi nhấn vào dấu ba chấm
-  const openUserDetailModal = async (user, store) => {
-    setSelectedDetailUser({
-      ...user,
-      storeName: store.storeName,
-      productCount: store.productCount,
-      storeAddress: store.storeAddress,
+  // Hàm mở modal chi tiết món ăn khi nhấn vào dấu ba chấm
+  const openFoodDetailModal = (food) => {
+    setSelectedDetailFood({
+      foodName: food.foodName,
+      storeName: food.store,
+      foodGroup: food.foodGroup,
+      price: food.price,
+      description: food.description,
+      imageUrl: food.imageUrl,
+      sellingTime: food.sellingTime,
     });
 
     setModalUserDetailIsOpen(true);
-
-    try {
-      const response = await api.post("/v1/admin/getStoreCount", {
-        userId: user._id,
-      });
-
-      if (response.status === 200) {
-        setStoreCount(response.data.storeCount);
-      }
-    } catch (error) {
-      console.error("Lỗi khi lấy số lượng cửa hàng:", error.message);
-      setStoreCount(0);
-    }
   };
 
-  const closeUserDetailModal = () => {
+  const closeFoodDetailModal = () => {
     setModalUserDetailIsOpen(false); // Đóng modal chi tiết
-    setSelectedDetailUser(null); // Xóa thông tin chi tiết
+    setSelectedDetailFood(null); // Xóa thông tin chi tiết
   };
 
-  // Lọc các cửa hàng dựa trên trạng thái online/offline của chủ cửa hàng
-  const filteredStores = stores.filter((store) => {
-    // Lọc cửa hàng dựa trên trạng thái isOpen của store
-    return filterStatus === null || store.isOpen === filterStatus;
+  // Lọc món ăn dựa trên trạng thái Đang bán/Ngừng bán
+  const filteredFoods = foods.filter((food) => {
+    return filterStatus === null || food.isAvailable === filterStatus;
   });
 
   return (
@@ -149,9 +104,7 @@ const Product = () => {
       </Helmet>
       <div className="headerstore">
         <div>
-          <h1 className="titlestore">Product
-            
-          </h1>
+          <h1 className="titlestore">Product</h1>
           <p className="welcome-textstore">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
         </div>
         <div className="button-groupstore">
@@ -173,25 +126,25 @@ const Product = () => {
             </th>
             <th>STT</th>
             <th>
-              <div className="divdangnhapstore" onClick={() => handleSortClick("storeName")}>
+              <div className="divdangnhapstore" onClick={() => handleSortClick("foodName")}>
                 <p style={{ width: "130px" }}>Tên Sản Phẩm</p>
                 <FontAwesomeIcon icon={faSort} className="sort-iconstore" />
               </div>
             </th>
             <th>
-              <div className="divdangnhap" onClick={() => handleSortClick("owner.representativeName")}>
+              <div className="divdangnhap" onClick={() => handleSortClick("foodGroup")}>
                 <p style={{ width: "130px" }}>Tên nhóm món</p>
                 <FontAwesomeIcon icon={faSort} className="sort-iconstore" />
               </div>
             </th>
             <th>
-              <div className="divdangnhap" onClick={() => handleSortClick("owner.storeCount")}>
+              <div className="divdangnhap" onClick={() => handleSortClick("price")}>
                 <p style={{ width: "130px" }}>Giá Món ăn</p>
                 <FontAwesomeIcon icon={faSort} className="sort-iconstore" />
               </div>
             </th>
             <th>
-              <div className="divdangnhap" onClick={() => handleSortClick("productCount")}>
+              <div className="divdangnhap" onClick={() => handleSortClick("store")}>
                 <p style={{ width: "130px" }}>Tên Cửa Hàng</p>
                 <FontAwesomeIcon icon={faSort} className="sort-iconstore" />
               </div>
@@ -212,9 +165,9 @@ const Product = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredStores.length > 0 ? (
-            filteredStores.map((store, index) => (
-              <tr key={store._id}>
+          {filteredFoods.length > 0 ? (
+            filteredFoods.map((food, index) => (
+              <tr key={food._id}>
                 <td>
                   <label className="custom-checkboxstore">
                     <input type="checkbox" className="checkboxstore" />
@@ -222,14 +175,15 @@ const Product = () => {
                   </label>
                 </td>
                 <td>{(currentPage - 1) * 10 + index + 1}</td>
-                <td>{store.storeName}</td>
-                <td>{store.owner ? store.owner.representativeName : "Không có chủ sở hữu"}</td>
-                <td>{store.owner ? store.owner.storeCount : "Không có số cửa hàng"}</td>
-                <td>{store.productCount}</td>
-                <td className="statusstore">{store.isOpen ? <span className="status online">Đang mở</span> : <span className="status offline">Đóng cửa</span>}</td>
-                <td>{store.createdAt ? moment(store.createdAt).format("DD/MM/YYYY") : "Không có ngày tạo"}</td>
+                <td>{food.foodName}</td>
+                <td>{food.foodGroup}</td>
+                <td>{food.price}</td>
+                <td>{food.store}</td>
+                <td className="statusstore">{food.isAvailable ? <span className="status online">Đang bán</span> : <span className="status offline">Ngừng bán</span>}</td>
+                {/* <td>{food.createdAt ? moment(food.createdAt).format("DD/MM/YYYY") : "Không có ngày tạo"}</td> */}
+                <td style={{ color: "red" }}>Chi tiết</td>
                 <td>
-                  <button className="menu-buttonstore" onClick={() => openUserDetailModal(store.owner, store)}>
+                  <button className="menu-buttonstore" onClick={() => openFoodDetailModal(food)}>
                     ...
                   </button>
                 </td>
@@ -237,45 +191,41 @@ const Product = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="9">Không có người dùng</td>
+              <td colSpan="9">Không có món ăn</td>
             </tr>
           )}
         </tbody>
       </table>
 
-      {/* Modal hiển thị chi tiết người dùng */}
-      <Modal isOpen={modalUserDetailIsOpen} onRequestClose={closeUserDetailModal} className="custom-modal1" overlayClassName="custom-modal-overlay1" shouldCloseOnOverlayClick={true}>
-        <span className="close-iconstore" onClick={closeUserDetailModal}>
+      {/* Modal hiển thị chi tiết món ăn */}
+      <Modal isOpen={modalUserDetailIsOpen} onRequestClose={closeFoodDetailModal} className="custom-modal1" overlayClassName="custom-modal-overlay1" shouldCloseOnOverlayClick={true}>
+        <span className="close-iconstore" onClick={closeFoodDetailModal}>
           <FontAwesomeIcon icon={faCircleXmark} />
         </span>
 
-        {selectedDetailUser && (
+        {selectedDetailFood && (
           <div className="custom-modal1divstore">
-            <h2 className="thongtinnguoidungstore">Thông tin chi tiết người dùng</h2>
+            <h2 className="thongtinnguoidungstore">Thông tin chi tiết món ăn</h2>
             <p>
-              <span className="thongtinnguoidung1store">Tên người dùng </span>
-              <span className="red">{selectedDetailUser.representativeName}</span>
+              <span className="thongtinnguoidung1store">Tên món ăn </span>
+              <span className="red">{selectedDetailFood.foodName}</span>
             </p>
             <p>
-              <span className="thongtinnguoidung1store">Số lượng cửa hàng </span>
-              <span className="green">{selectedDetailUser.storeCount}</span>
+              <span className="thongtinnguoidung1store">Giá </span>
+              <span className="green">{selectedDetailFood.price}</span>
             </p>
             <div className="custom-modal1divstore1">
               <p>
                 <span className="thongtinnguoidung1store">Tên cửa hàng </span>
-                <span className="tencuahang">{selectedDetailUser.storeName}</span>
+                <span className="tencuahang">{selectedDetailFood.storeName}</span>
               </p>
               <p>
-                <span className="thongtinnguoidung1store">Địa chỉ </span>
-                <span className="stylechung">{selectedDetailUser.storeAddress}</span>
+                <span className="thongtinnguoidung1store">Nhóm món </span>
+                <span className="stylechung">{selectedDetailFood.foodGroup}</span>
               </p>
               <p>
-                <span className="thongtinnguoidung1store">Số lượng sản phẩm </span>
-                <span className="stylechung">{selectedDetailUser.productCount}</span>
-              </p>
-              <p>
-                <span className="thongtinnguoidung1store">Mô Hình Kinh Doanh </span>
-                <span className="stylechung">{selectedDetailUser.businessType}</span>
+                <span className="thongtinnguoidung1store">Mô tả </span>
+                <span className="stylechung">{selectedDetailFood.description}</span>
               </p>
             </div>
           </div>
@@ -283,16 +233,16 @@ const Product = () => {
       </Modal>
 
       {showStatusFilter && (
-        <div className="filter-dropdownstore">
+        <div className="filter-dropdownproduct">
           <ul>
             <li className="dropdown-itemstore" onClick={() => handleStatusFilter(null)}>
               Tất cả
             </li>
             <li className="dropdown-itemstore" onClick={() => handleStatusFilter(true)}>
-              Đang mở
+              Đang bán
             </li>
             <li className="dropdown-itemstore" onClick={() => handleStatusFilter(false)}>
-              Đóng cửa
+              Ngừng bán
             </li>
           </ul>
         </div>
