@@ -9,6 +9,7 @@ import Modal from "react-modal"; // Thêm thư viện react-modal để hiển t
 import api from "../../api"; // Import apiService thay vì axios
 import { Helmet } from "react-helmet";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import { ClipLoader } from "react-spinners"; // Thêm thư viện loading spinner
 
 const User = () => {
   const user = useSelector((state) => state.user.userInfo);
@@ -26,6 +27,7 @@ const User = () => {
   const [showStatusFilter, setShowStatusFilter] = useState(false);
   const [showRoleFilter, setShowRoleFilter] = useState(false);
   const [storeCount, setStoreCount] = useState(0); // Thêm state để lưu số lượng cửa hàng
+  const [isLoading, setIsLoading] = useState(false); // Trạng thái loading
 
   const fetchUsers = async (page = 1) => {
     try {
@@ -84,6 +86,7 @@ const User = () => {
 
   const handleApprove = async () => {
     try {
+      setIsLoading(true); // Bắt đầu loading
       let apiEndpoint = "";
 
       if (selectedDetailUser.roleId === "seller") {
@@ -102,11 +105,14 @@ const User = () => {
     } catch (error) {
       console.error("Error approving user:", error.message);
       alert("Lỗi khi duyệt người dùng");
+    } finally {
+      setIsLoading(false); // Kết thúc loading
     }
   };
 
   const handleReject = async () => {
     try {
+      setIsLoading(true); // Bắt đầu loading
       let apiEndpoint = "";
 
       if (selectedDetailUser.roleId === "seller") {
@@ -125,6 +131,8 @@ const User = () => {
     } catch (error) {
       console.error("Error rejecting user:", error.message);
       alert("Lỗi khi từ chối người dùng");
+    } finally {
+      setIsLoading(false); // Kết thúc loading
     }
   };
 
@@ -325,12 +333,18 @@ const User = () => {
 
             {/* Actions for approval or rejection */}
             <div className="modal-actions">
-              <button className="btn-approve1" onClick={handleApprove}>
-                Đồng ý
-              </button>
-              <button className="btn-reject" onClick={handleReject}>
-                Từ chối
-              </button>
+              {isLoading ? (
+                <ClipLoader size={30} color={"#123abc"} loading={isLoading} /> // Hiển thị loading spinner
+              ) : (
+                <>
+                  <button className="btn-approve1" onClick={handleApprove}>
+                    Đồng ý
+                  </button>
+                  <button className="btn-reject" onClick={handleReject}>
+                    Từ chối
+                  </button>
+                </>
+              )}
             </div>
           </>
         ) : (
