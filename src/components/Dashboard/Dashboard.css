@@ -10,8 +10,8 @@
   display: flex;
   flex-direction: column;
   padding-top: 20px;
-  height: 990px;
-  border-right: 5px solid #e53935; /* Red border on the right */
+  height: 1040px;
+  border-right: 5px solid #e53935; 
 }
 
 .logo-containerdashboard {
@@ -46,7 +46,7 @@
   margin-right: 10px;
 }
 
-.sidebar-item.active  {
+.sidebar-item.active {
   color: #e53935;
 }
 
@@ -92,8 +92,8 @@
   font-size: 16px;
   outline: none;
   border: none;
-  caret-color: #2D9CDB;
-  border-radius: 10px; 
+  caret-color: #2d9cdb;
+  border-radius: 10px;
 }
 
 .search-input::placeholder {

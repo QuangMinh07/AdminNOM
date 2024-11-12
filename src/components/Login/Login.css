@@ -1,6 +1,6 @@
 .imgbackground {
   width: 100%;
-  height: 700px;
+  height: 706px;
   object-fit: cover; /* Ensures the image covers the entire area */
   position: relative;
 }
@@ -20,14 +20,7 @@
   height: auto;
   padding: 40px;
   border-radius: 100px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.9),
-    rgba(204, 204, 204, 0.9),
-    rgba(179, 179, 179, 0.9),
-    rgba(166, 166, 166, 0.9),
-    rgba(153, 153, 153, 0.9)
-  );
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(204, 204, 204, 0.9), rgba(179, 179, 179, 0.9), rgba(166, 166, 166, 0.9), rgba(153, 153, 153, 0.9));
   opacity: 0.85;
   blend-mode: hard-light;
   display: flex;
@@ -50,39 +43,45 @@
   width: 1300px;
   display: flex;
   flex-direction: row;
+  height: 360px;
 }
 
 .logo {
-  width: 540px;
+  width: 360px;
   height: auto;
   margin-top: -20px;
+  margin-left: 70px;
 }
 
 .Login {
   font-family: "Petrona", serif; /* Sử dụng font Petrona */
   font-weight: 400; /* Độ dày của chữ */
-  font-size: 80px; /* Kích thước chữ */
+  font-size: 40px; /* Kích thước chữ */
   line-height: 90.24px; /* Chiều cao dòng */
-  margin-top: -1px;
+  margin-top: -40px;
+  margin-left: 160px;
 }
 
 .textLogin {
   font-family: "Barlow", sans-serif; /* Sử dụng font Barlow */
   font-weight: 500; /* Độ dày của chữ */
-  font-size: 20px; /* Kích thước chữ */
+  font-size: 16px; /* Kích thước chữ */
   line-height: 24px; /* Chiều cao dòng */
   margin-top: -60px;
+  margin-left: 160px;
 }
 
 .lableLogin {
   font-family: "Petrona", sans-serif; /* Sử dụng font Barlow */
   font-weight: 400; /* Độ dày của chữ */
-  font-size: 27.21px; /* Kích thước chữ */
+  font-size: 16px; /* Kích thước chữ */
   line-height: 30.69px; /* Chiều cao dòng */
 }
+
 .login-inputs {
-  width: 100%;
-  margin-top: 30px;
+  width: 68%;
+  margin-top: 10px;
+  margin-left: 160px;
 }
 
 .input-group {
@@ -95,7 +94,7 @@
   margin-bottom: 15px;
   position: relative;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .input-group input {
@@ -128,13 +127,13 @@
 }
 
 .buttonlogin {
-  width: 104%;
+  width: 106%;
   padding: 15px;
   border-radius: 8px;
   background-color: #e53935;
   border: none;
   cursor: pointer;
-  margin-top: 50px;
+  margin-top: 40px;
   height: 50px;
   display: flex;
   align-items: center;

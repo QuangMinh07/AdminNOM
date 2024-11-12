@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import background from "../../image/backgorund.png";
 import "../Login/Login.css";
 import logo from "../../image/Logo.png";
@@ -16,6 +16,16 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Kiểm tra nếu là thiết bị di động và thêm lớp "mobile" vào body
+  useEffect(() => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      document.body.classList.add("mobile");
+    } else {
+      document.body.classList.remove("mobile");
+    }
+  }, []);
 
   const loginUser = async () => {
     try {
