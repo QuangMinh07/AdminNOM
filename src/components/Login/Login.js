@@ -19,7 +19,7 @@ const Login = () => {
 
   const loginUser = async () => {
     try {
-      const response = await fetch("http://localhost:5000/v1/admin/login", {
+      const response = await fetch("https://nom-9xxu.onrender.com/v1/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const Login = () => {
           },
         })
       );
-
+      console.log("Navigating to /dashboard"); // Log này giúp bạn kiểm tra navigate
       navigate("/dashboard");
 
       alert("Đăng nhập thành công!");
@@ -94,14 +94,8 @@ const Login = () => {
   return (
     <div className="containerLogin">
       <Helmet>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Petrona:wght@400&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Petrona:wght@400&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap" rel="stylesheet" />
       </Helmet>
       <img src={background} alt="background" className="imgbackground" />
       <div className="login-container">
@@ -112,34 +106,16 @@ const Login = () => {
             </div>
             <div className="noidunglogin">
               <p className="Login">LOGIN</p>
-              <p className="textLogin">
-                Chào mừng bạn đến với ADMIN của hệ thống ứng dụng NOM!
-              </p>
+              <p className="textLogin">Chào mừng bạn đến với ADMIN của hệ thống ứng dụng NOM!</p>
               <form onSubmit={handleSubmit} className="login-inputs">
                 <div className="input-group">
                   <label className="lableLogin">Tên đăng nhập</label>
-                  <input
-                    type="text"
-                    placeholder="Nguyễn Thị Kiều Nghi"
-                    className="login-username-input"
-                    value={username}
-                    onChange={(e) => setUserName(e.target.value)}
-                  />
+                  <input type="text" placeholder="Nguyễn Thị Kiều Nghi" className="login-username-input" value={username} onChange={(e) => setUserName(e.target.value)} />
                 </div>
                 <div className="input-group1">
                   <label className="lableLogin">Mật khẩu</label>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="123456789"
-                    className="login-password-input"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <FontAwesomeIcon
-                    icon={faEye}
-                    className="icon-eye"
-                    onClick={() => setShowPassword(!showPassword)}
-                  />
+                  <input type={showPassword ? "text" : "password"} placeholder="123456789" className="login-password-input" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <FontAwesomeIcon icon={faEye} className="icon-eye" onClick={() => setShowPassword(!showPassword)} />
                 </div>
                 <button type="submit" className="buttonlogin">
                   <p className="login-heading">LOGIN</p>

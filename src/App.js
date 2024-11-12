@@ -14,8 +14,7 @@ import { setCredentials } from "../src/Redux/Slice/userSlice";
 const App = () => {
   const dispatch = useDispatch();
 
-  // Lấy token từ cookie
-  const isLoggedIn = Cookies.get("accessToken");
+  const { accessToken } = useSelector((state) => state.user);
 
   useEffect(() => {
     // Kiểm tra xem có thông tin lưu trữ trong Cookies hay không và khôi phục lại Redux store
@@ -36,13 +35,13 @@ const App = () => {
       <div className="App">
         <Routes>
           {/* Nếu người dùng đã đăng nhập, chuyển đến Dashboard, nếu không thì đến Login */}
-          <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />} />
-          <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />} />
-          <Route path="/user" element={isLoggedIn ? <User /> : <Navigate to="/" />} />
-          <Route path="/store" element={isLoggedIn ? <Store /> : <Navigate to="/" />} />
-          <Route path="/order" element={isLoggedIn ? <Order /> : <Navigate to="/" />} />
-          <Route path="/overview" element={isLoggedIn ? <Overview /> : <Navigate to="/" />} />
-          <Route path="/product" element={isLoggedIn ? <Product /> : <Navigate to="/" />} />
+          <Route path="/" element={accessToken  ? <Navigate to="/dashboard" /> : <Login />} />
+          <Route path="/dashboard" element={accessToken  ? <Dashboard /> : <Navigate to="/" />} />
+          <Route path="/user" element={accessToken  ? <User /> : <Navigate to="/" />} />
+          <Route path="/store" element={accessToken  ? <Store /> : <Navigate to="/" />} />
+          <Route path="/order" element={accessToken  ? <Order /> : <Navigate to="/" />} />
+          <Route path="/overview" element={accessToken  ? <Overview /> : <Navigate to="/" />} />
+          <Route path="/product" element={accessToken  ? <Product /> : <Navigate to="/" />} />
         </Routes>
       </div>
     </Router>

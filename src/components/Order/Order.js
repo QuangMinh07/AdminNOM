@@ -88,7 +88,7 @@ const Order = () => {
       const token = localStorage.getItem("accessToken");
       console.log("Token from localStorage:", token);
       const response = await axios.post(
-        "http://localhost:5000/v1/admin/approve-seller",
+        "https://nom-9xxu.onrender.com/v1/admin/approve-seller",
         { userId: selectedUserId },
         {
           headers: {
@@ -112,7 +112,7 @@ const Order = () => {
     try {
       const token = localStorage.getItem("accessToken");
       const response = await axios.post(
-        "http://localhost:5000/v1/admin/reject-seller",
+        "https://nom-9xxu.onrender.com/v1/admin/reject-seller",
         { userId: selectedUserId },
         {
           headers: {
@@ -140,7 +140,7 @@ const Order = () => {
     try {
       const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
       const response = await axios.post(
-        "http://localhost:5000/v1/admin/getStoreCount",
+        "https://nom-9xxu.onrender.com/v1/admin/getStoreCount",
         { userId: user._id }, // Truyền đúng userId thay vì selectedUserId
         {
           headers: {
