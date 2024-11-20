@@ -4,8 +4,8 @@
   border: 1px solid #ccc;
   z-index: 1000;
   width: 150px;
-  top: 65%; /* Điều này đảm bảo dropdown nằm ngay dưới chữ "Trạng thái" */
-  left: 130; /* Canh trái theo thành phần chứa */
+  top: 40%; /* Điều này đảm bảo dropdown nằm ngay dưới chữ "Trạng thái" */
+  left: 77%; /* Canh trái theo thành phần chứa */
 }
 
 .filter-dropdownstore ul {

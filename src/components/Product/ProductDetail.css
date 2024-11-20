@@ -1,0 +1,89 @@
+.product-detail-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100%;
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; /* Chia modal thành các phần: header, content, footer */
+  z-index: 1000;
+}
+
+.close-button {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #d32f2f;
+}
+
+.product-detail-header {
+  flex-shrink: 0; /* Header cố định */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.product-detail-content {
+  flex-grow: 1; /* Nội dung cuộn */
+  overflow-y: auto; /* Cho phép cuộn dọc */
+  padding-left: 10px;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.store-name {
+  color: #e53935;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.action-buttons {
+  flex-shrink: 0; /* Nút cố định */
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.delete-button,
+.warn-button {
+  width: 48%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.delete-button {
+  background-color: #e53935;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.warn-button {
+  background-color: #ff9800;
+  color: white;
+}
+
+.warn-button:hover {
+  background-color: #fb8c00;
+}

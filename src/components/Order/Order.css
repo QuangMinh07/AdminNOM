@@ -83,6 +83,12 @@
   margin-top: 31px;
 }
 
+.sort-icongiatien {
+  margin-left: 5px;
+  cursor: pointer;
+  margin-top: 22px;
+}
+
 .sort-icondangnhap {
   margin-left: 5px;
   cursor: pointer;
@@ -226,8 +232,41 @@
 .divdangnhap {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .approve-button {
   cursor: pointer;
+}
+
+.status-pending {
+  color: #ffa726;
+}
+
+.status-processing {
+  color: #29b6f6;
+}
+
+.status-shipped {
+  color: #ab47bc;
+}
+
+.status-completed {
+  color: #66bb6a;
+}
+
+.status-received {
+  color: #34c759;
+}
+
+.status-delivered {
+  color: #ffc529;
+}
+
+.status-cancelled {
+  color: #1976d2;
+}
+
+.status-unknown {
+  color: #9e9e9e;
 }

@@ -1,0 +1,87 @@
+.order-detail-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 950px;
+  height: 100%;
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; /* Chia modal thành các phần: header, content, footer */
+  z-index: 1000;
+}
+
+.close-button {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #d32f2f;
+}
+
+.order-detail-header {
+  flex-shrink: 0; /* Header cố định */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.order-detail-content {
+  flex-grow: 1; /* Nội dung cuộn */
+  overflow-y: auto; /* Cho phép cuộn dọc */
+  padding-left: 10px;
+}
+
+.order-summary-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.order-left {
+  width: 58%;
+}
+
+.order-right {
+  width: 48%;
+}
+.section-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #e53935;
+}
+
+.custom-order-full {
+  padding-left: 10px;
+  color: #273b4a;
+}
+
+.order-items {
+  width: 90%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.order-items th,
+.order-items td {
+  padding: 10px;
+  text-align: center;
+}
+
+.tongthanhtoan {
+  padding-right: 200px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.danhgia {
+  padding-left: 60px;
+}

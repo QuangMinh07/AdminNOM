@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./Store.css";
 import "./ModalStore.css";
 import { FiSliders } from "react-icons/fi";
@@ -296,6 +295,38 @@ const Store = () => {
           </ul>
         </div>
       )}
+
+      <div className="pagination">
+        <button
+          className="pagination-button"
+          disabled={currentPage === 1 || totalPages === 1} // Nút "Trước" bị vô hiệu nếu ở trang đầu tiên hoặc chỉ có một trang
+          onClick={() => {
+            setCurrentPage((prev) => {
+              const newPage = Math.max(prev - 1, 1);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              return newPage;
+            });
+          }}
+        >
+          Trước
+        </button>
+        <span className="pagination-info">
+          Trang {currentPage} / {totalPages}
+        </span>
+        <button
+          className="pagination-button"
+          disabled={currentPage === totalPages || totalPages === 1} // Nút "Tiếp" bị vô hiệu nếu ở trang cuối cùng hoặc chỉ có một trang
+          onClick={() => {
+            setCurrentPage((prev) => {
+              const newPage = Math.min(prev + 1, totalPages);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              return newPage;
+            });
+          }}
+        >
+          Tiếp
+        </button>
+      </div>
     </div>
   );
 };
