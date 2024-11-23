@@ -28,6 +28,15 @@ const User = () => {
   const [showRoleFilter, setShowRoleFilter] = useState(false);
   const [storeCount, setStoreCount] = useState(0); // Thêm state để lưu số lượng cửa hàng
   const [isLoading, setIsLoading] = useState(false); // Trạng thái loading
+  const [selectedUsers, setSelectedUsers] = useState([]); // Lưu danh sách userId đã chọn
+  const [loading, setLoading] = useState(false); // Trạng thái loading
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false); // Trạng thái mở modal xác nhận xóa
+  const [deleteImmediately, setDeleteImmediately] = useState(false); // Loại xóa (ngay lập tức hoặc chờ)
+
+  const handleOpenDeleteModal = (immediate) => {
+    setDeleteImmediately(immediate);
+    setIsConfirmDeleteModalOpen(true);
+  };
 
   const fetchUsers = async (page = 1) => {
     try {
@@ -54,6 +63,8 @@ const User = () => {
 
       if (response.data.success) {
         setUsers(response.data.data);
+        console.log("Fetched users:", response.data.data);
+
         setTotalPages(response.data.totalPages);
         setCurrentPage(response.data.page);
       } else {
@@ -61,6 +72,52 @@ const User = () => {
       }
     } catch (error) {
       console.error("Error:", error.message);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsConfirmDeleteModalOpen(false); // Đóng modal
+
+    try {
+      setLoading(true);
+      const response = await api.post("/v1/admin/delete-user", {
+        userIds: selectedUsers,
+        deleteImmediately,
+      });
+
+      if (response.data.success) {
+        alert(response.data.message);
+        fetchUsers(); // Cập nhật danh sách người dùng
+        setSelectedUsers([]);
+      } else {
+        console.error("Error:", response.data.message);
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error deleting users:", error.message);
+      alert("Đã xảy ra lỗi khi xử lý người dùng.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Xử lý khi chọn/deselect checkbox của từng người dùng
+  const handleCheckboxChange = (userId) => {
+    setSelectedUsers((prevSelectedUsers) => {
+      if (prevSelectedUsers.includes(userId)) {
+        return prevSelectedUsers.filter((id) => id !== userId); // Bỏ userId nếu đã chọn
+      } else {
+        return [...prevSelectedUsers, userId]; // Thêm userId nếu chưa chọn
+      }
+    });
+  };
+
+  // Xử lý khi chọn/deselect tất cả checkbox
+  const handleSelectAll = () => {
+    if (selectedUsers.length === users.length) {
+      setSelectedUsers([]); // Bỏ chọn tất cả
+    } else {
+      setSelectedUsers(users.map((user) => user._id)); // Chọn tất cả
     }
   };
 
@@ -171,6 +228,11 @@ const User = () => {
 
   return (
     <div className="user-container">
+      {loading && (
+        <div className="loading-overlayuser">
+          <div className="spinneruser"></div>
+        </div>
+      )}
       <Helmet>
         <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap" rel="stylesheet" />
       </Helmet>
@@ -180,7 +242,12 @@ const User = () => {
           <p className="welcome-textuser">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
         </div>
         <div className="button-group">
-          <button className="btn btn-deleteuser">Xoá</button>
+          <button className="btn btn-deleteuser" onClick={() => handleOpenDeleteModal(true)}>
+            Xóa ngay lập tức
+          </button>
+          <button className="btn btn-deleteuser" onClick={() => handleOpenDeleteModal(false)}>
+            Đặt trạng thái chờ xóa
+          </button>
           <button className="btn btn-approve">Duyệt chuyển đổi</button>
           <div className="filter-icon-containeruser">
             <FiSliders className="filter-iconuser" />
@@ -192,7 +259,7 @@ const User = () => {
           <tr>
             <th>
               <label className="custom-checkbox">
-                <input type="checkbox" className="checkbox" />
+                <input type="checkbox" className="checkbox" onChange={handleSelectAll} checked={selectedUsers.length === users.length && users.length > 0} />
                 <span className="checktitle"></span>
               </label>
             </th>
@@ -228,7 +295,7 @@ const User = () => {
               <tr key={user._id}>
                 <td>
                   <label className="custom-checkbox">
-                    <input type="checkbox" className="checkbox" />
+                    <input type="checkbox" className="checkbox" onChange={() => handleCheckboxChange(user._id)} checked={selectedUsers.includes(user._id)} />
                     <span className="checkmark"></span>
                   </label>
                 </td>
@@ -259,6 +326,8 @@ const User = () => {
                     </div>
                   ) : user.roleId === "shipper" ? (
                     <span style={{ color: "#32CD32" }}>Người giao hàng</span> // Green color for "Người giao hàng"
+                  ) : user.roleId === "staff" ? (
+                    <span style={{ color: "#32CD32" }}>Nhân viên</span>
                   ) : (
                     <span style={{ color: "#1E90FF" }}>Chủ cửa hàng</span> // Blue color for "Chủ cửa hàng"
                   )}
@@ -364,7 +433,7 @@ const User = () => {
             {/* Thêm đoạn code hiển thị trạng thái ở đây */}
             <p>
               <span className="thongtinnguoidung1">Trạng thái </span>
-              <span className="common-color">{selectedDetailUser.roleId === "customer" ? "Người mua" : selectedDetailUser.roleId === "seller" ? "Người bán" : "Người giao hàng"}</span>
+              <span className="common-color">{selectedDetailUser.roleId === "customer" ? "Người mua" : selectedDetailUser.roleId === "seller" ? "Người bán" : selectedDetailUser.roleId === "staff" ? "Nhân viên" : "Người giao hàng"}</span>
               {selectedDetailUser.roleId === "seller" && (
                 <p className="store">
                   <span className="thongtinnguoidung1">Số cửa hàng </span>
@@ -419,6 +488,9 @@ const User = () => {
             <li className="dropdown-item" onClick={() => handleRoleFilter("shipper")}>
               Người giao hàng
             </li>
+            <li className="dropdown-item" onClick={() => handleRoleFilter("staff")}>
+              Nhân viên
+            </li>
           </ul>
         </div>
       )}
@@ -438,6 +510,19 @@ const User = () => {
           </ul>
         </div>
       )}
+
+      <Modal isOpen={isConfirmDeleteModalOpen} onRequestClose={() => setIsConfirmDeleteModalOpen(false)} className="delete-user-modal" overlayClassName="delete-user-modal-overlay">
+        <h2 className="delete-user-modal-title">Xác nhận xóa</h2>
+        <p className="delete-user-modal-message">{deleteImmediately ? "Bạn có chắc chắn muốn xóa ngay lập tức những người dùng đã chọn?" : "Bạn có chắc chắn muốn đặt trạng thái chờ xóa cho những người dùng đã chọn?"}</p>
+        <div className="delete-user-modal-actions">
+          <button className="delete-user-modal-btn-confirm" onClick={handleConfirmDelete}>
+            Xác nhận
+          </button>
+          <button className="delete-user-modal-btn-cancel" onClick={() => setIsConfirmDeleteModalOpen(false)}>
+            Hủy
+          </button>
+        </div>
+      </Modal>
 
       <div className="pagination">
         <button

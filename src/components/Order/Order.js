@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./Order.css";
 import "./ModalOrder.css";
 import { useSelector } from "react-redux";
@@ -27,43 +27,46 @@ const Order = () => {
     setSelectedOrder(null); // Đóng chi tiết món ăn
   };
 
-  const fetchOrders = async (page = 1) => {
-    try {
-      const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
-      console.log("Token from localStorage:", token);
+  const fetchOrders = useCallback(
+    async (page = 1) => {
+      try {
+        const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
+        console.log("Token from localStorage:", token);
 
-      if (!token) {
-        throw new Error("Token không tồn tại");
+        if (!token) {
+          throw new Error("Token không tồn tại");
+        }
+
+        const response = await api.get("/v1/admin/get-all-order", {
+          params: {
+            page,
+            limit: 10,
+            sortField,
+            sortOrder,
+            orderStatus: filterStatus,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`, // Gửi token trong headers
+          },
+        });
+
+        if (response.data.allOrdersDetails) {
+          setOrders(response.data.allOrdersDetails);
+          setTotalPages(response.data.totalPages);
+          setCurrentPage(page);
+        } else {
+          console.error("Error fetching users:", response.data.msg);
+        }
+      } catch (error) {
+        console.error("Error:", error.message);
       }
-
-      const response = await api.get("/v1/admin/get-all-order", {
-        params: {
-          page,
-          limit: 10,
-          sortField,
-          sortOrder,
-          orderStatus: filterStatus,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`, // Gửi token trong headers
-        },
-      });
-
-      if (response.data.allOrdersDetails) {
-        setOrders(response.data.allOrdersDetails);
-        setTotalPages(response.data.totalPages);
-        setCurrentPage(page);
-      } else {
-        console.error("Error fetching users:", response.data.msg);
-      }
-    } catch (error) {
-      console.error("Error:", error.message);
-    }
-  };
+    },
+    [sortField, sortOrder, filterStatus] // Thêm currentPage vào dependencies
+  );
 
   useEffect(() => {
     fetchOrders(currentPage);
-  }, [currentPage, sortField, sortOrder, filterStatus]);
+  }, [fetchOrders, currentPage]);
 
   // Hàm xử lý sắp xếp tên đăng nhập
   const handleSortClick = (field) => {

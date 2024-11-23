@@ -325,3 +325,85 @@
   margin-top: -25px;
   margin-left: 300px;
 }
+
+/* Modal container */
+.delete-user-modal {
+  width: 400px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+  max-width: 90%;
+  margin: auto;
+}
+
+/* Overlay for modal */
+.delete-user-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal header text */
+.delete-user-modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Modal body text */
+.delete-user-modal-message {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Action buttons container */
+.delete-user-modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Confirm button */
+.delete-user-modal-btn-confirm {
+  background: #e53935;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.delete-user-modal-btn-confirm:hover {
+  background: #d32f2f;
+}
+
+/* Cancel button */
+.delete-user-modal-btn-cancel {
+  background: #f0f0f0;
+  color: #555;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.delete-user-modal-btn-cancel:hover {
+  background: #e0e0e0;
+}

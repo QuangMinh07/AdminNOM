@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./Product.css";
 import "./ModalProduct.css";
 import { FiSliders } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
-import Modal from "react-modal";
 import api from "../../api";
 import { Helmet } from "react-helmet";
-import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import ProductDetail from "./ProductDetail"; // Import component chi tiết sản phẩm
 
 const Product = () => {
@@ -16,8 +14,6 @@ const Product = () => {
   const [foods, setFoods] = useState([]); // State để lưu danh sách món ăn
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [modalUserDetailIsOpen, setModalUserDetailIsOpen] = useState(false); // Trạng thái modal chi tiết món ăn
-  const [selectedDetailFood, setSelectedDetailFood] = useState(null); // Lưu thông tin món ăn được chọn để hiển thị chi tiết
   const [sortField, setSortField] = useState("foodName"); // Mặc định sắp xếp theo tên món ăn
   const [sortOrder, setSortOrder] = useState("asc"); // Mặc định sắp xếp tăng dần
   const [filterStatus, setFilterStatus] = useState(null); // Lọc theo trạng thái (Đang bán, Ngừng bán)
@@ -51,33 +47,36 @@ const Product = () => {
     setSelectedFood(null); // Đóng chi tiết món ăn
   };
 
-  const handleDelete = async (food) => {
-    if (!food || !food._id) {
-      alert("ID món ăn không hợp lệ");
-      return;
-    }
-
-    if (window.confirm(`Bạn có chắc chắn muốn xóa món ăn "${food.foodName}" không?`)) {
-      setIsLoading(true); // Bật trạng thái loading
-      try {
-        const response = await api.delete(`/v1/food/delete/${food._id}`); // Gọi API xóa món ăn
-        if (response.data.success) {
-          alert("Xóa món ăn thành công!");
-          setFoods((prevFoods) => prevFoods.filter((item) => item._id !== food._id)); // Cập nhật danh sách món ăn
-          closeFoodDetail(); // Đóng modal chi tiết món ăn
-        } else {
-          alert(response.data.msg || "Có lỗi xảy ra khi xóa món ăn.");
-        }
-      } catch (error) {
-        console.error("Lỗi khi xóa món ăn:", error);
-        alert("Lỗi khi xóa món ăn. Vui lòng thử lại sau.");
-      } finally {
-        setIsLoading(false); // Tắt trạng thái loading
+  const handleDelete = useCallback(
+    async (food) => {
+      if (!food || !food._id) {
+        alert("ID món ăn không hợp lệ");
+        return;
       }
-    }
-  };
 
-  const handleDeleteSelected = async () => {
+      if (window.confirm(`Bạn có chắc chắn muốn xóa món ăn "${food.foodName}" không?`)) {
+        setIsLoading(true); // Bật trạng thái loading
+        try {
+          const response = await api.delete(`/v1/food/delete/${food._id}`); // Gọi API xóa món ăn
+          if (response.data.success) {
+            alert("Xóa món ăn thành công!");
+            setFoods((prevFoods) => prevFoods.filter((item) => item._id !== food._id)); // Cập nhật danh sách món ăn
+            closeFoodDetail(); // Đóng modal chi tiết món ăn
+          } else {
+            alert(response.data.msg || "Có lỗi xảy ra khi xóa món ăn.");
+          }
+        } catch (error) {
+          console.error("Lỗi khi xóa món ăn:", error);
+          alert("Lỗi khi xóa món ăn. Vui lòng thử lại sau.");
+        } finally {
+          setIsLoading(false); // Tắt trạng thái loading
+        }
+      }
+    },
+    [setFoods] // Dependencies cần thiết
+  );
+
+  const handleDeleteSelected = useCallback(async () => {
     if (selectedFoodIds.length === 0) {
       alert("Vui lòng chọn ít nhất một món ăn để xóa!");
       return;
@@ -111,49 +110,52 @@ const Product = () => {
         setIsLoading(false); // Tắt trạng thái loading
       }
     }
-  };
+  }, [selectedFoodIds, setFoods]);
 
   const handleWarn = (food) => {
     console.log("Sending warning for food:", food.foodName);
   };
 
   // API để lấy danh sách món ăn
-  const fetchFoods = async (page = 1) => {
-    try {
-      const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
+  const fetchFoods = useCallback(
+    async (page = 1) => {
+      try {
+        const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
 
-      if (!token) {
-        throw new Error("Token không tồn tại");
+        if (!token) {
+          throw new Error("Token không tồn tại");
+        }
+
+        const response = await api.get("/v1/admin/get-all-food", {
+          params: {
+            page: page,
+            limit: 10,
+            sortField: sortField,
+            sortOrder: sortOrder,
+            isAvailable: filterStatus,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`, // Gửi token trong headers
+          },
+        });
+
+        if (response.data.foods) {
+          setFoods(response.data.foods); // Lưu danh sách món ăn vào state
+          setTotalPages(response.data.totalPages); // Cập nhật tổng số trang
+          setCurrentPage(response.data.currentPage); // Cập nhật trang hiện tại
+        } else {
+          console.error("Error fetching foods:", response.data.msg);
+        }
+      } catch (error) {
+        console.error("Error:", error.message);
       }
-
-      const response = await api.get("/v1/admin/get-all-food", {
-        params: {
-          page: page,
-          limit: 10,
-          sortField: sortField,
-          sortOrder: sortOrder,
-          isAvailable: filterStatus,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`, // Gửi token trong headers
-        },
-      });
-
-      if (response.data.foods) {
-        setFoods(response.data.foods); // Lưu danh sách món ăn vào state
-        setTotalPages(response.data.totalPages); // Cập nhật tổng số trang
-        setCurrentPage(response.data.currentPage); // Cập nhật trang hiện tại
-      } else {
-        console.error("Error fetching foods:", response.data.msg);
-      }
-    } catch (error) {
-      console.error("Error:", error.message);
-    }
-  };
+    },
+    [sortField, sortOrder, filterStatus]
+  ); // Dependencies cần thiết
 
   useEffect(() => {
     fetchFoods(currentPage); // Gọi API để lấy danh sách món ăn
-  }, [currentPage, sortField, sortOrder, filterStatus]);
+  }, [fetchFoods, currentPage]); // Phụ thuộc vào fetchFoods để luôn đồng bộ
 
   // Hàm xử lý sắp xếp tên món ăn
   const handleSortClick = (field) => {

@@ -24,6 +24,89 @@ const Store = () => {
   const [showStatusFilter, setShowStatusFilter] = useState(false);
   const [storeCount, setStoreCount] = useState(0); // Thêm state để lưu số lượng cửa hàng
   const [stores, setStores] = useState([]); // Thêm state để lưu danh sách cửa hàng
+  const [selectedStores, setSelectedStores] = useState([]); // Lưu danh sách cửa hàng đã chọn
+  const [loading, setLoading] = useState(false); // Thêm trạng thái loading
+
+  const lockStore = async (storeId) => {
+    try {
+      setLoading(true); // Bắt đầu trạng thái loading
+      const token = localStorage.getItem("accessToken");
+      if (!token) throw new Error("Token không tồn tại");
+
+      const response = await api.post(
+        "/v1/admin/lock-store",
+        { storeId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        alert(response.data.message); // Thông báo khi khóa thành công
+        fetchStores(currentPage); // Cập nhật lại danh sách cửa hàng
+      } else {
+        console.error("Error locking store:", response.data.msg);
+      }
+    } catch (error) {
+      console.error("Lỗi khi khóa cửa hàng:", error.message);
+    } finally {
+      setLoading(false); // Kết thúc trạng thái loading
+    }
+  };
+
+  const unlockStore = async (storeId) => {
+    try {
+      setLoading(true); // Bắt đầu trạng thái loading
+      const token = localStorage.getItem("accessToken");
+      if (!token) throw new Error("Token không tồn tại");
+
+      const response = await api.post(
+        "/v1/admin/unlock-store",
+        { storeId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        alert(response.data.message); // Thông báo khi mở khóa thành công
+        fetchStores(currentPage); // Cập nhật lại danh sách cửa hàng
+      } else {
+        console.error("Error unlocking store:", response.data.msg);
+      }
+    } catch (error) {
+      console.error("Lỗi khi mở khóa cửa hàng:", error.message);
+    } finally {
+      setLoading(false); // Kết thúc trạng thái loading
+    }
+  };
+
+  // Hàm xử lý khi checkbox của cửa hàng thay đổi
+  const handleCheckboxChange = (storeId) => {
+    setSelectedStores((prevSelectedStores) => {
+      if (prevSelectedStores.includes(storeId)) {
+        return prevSelectedStores.filter((id) => id !== storeId); // Nếu đã chọn thì bỏ chọn
+      } else {
+        return [...prevSelectedStores, storeId]; // Nếu chưa chọn thì thêm vào
+      }
+    });
+  };
+
+  const handleLockSelectedStores = () => {
+    selectedStores.forEach((storeId) => {
+      lockStore(storeId); // Gọi API khóa cửa hàng
+    });
+  };
+
+  const handleUnlockSelectedStores = () => {
+    selectedStores.forEach((storeId) => {
+      unlockStore(storeId); // Gọi API mở khóa cửa hàng
+    });
+  };
 
   const fetchUsers = async (page = 1) => {
     try {
@@ -144,6 +227,11 @@ const Store = () => {
 
   return (
     <div className="user-containerstore">
+      {loading && (
+        <div className="loading-overlaystore">
+          <div className="spinnerstore"></div>
+        </div>
+      )}
       <Helmet>
         <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap" rel="stylesheet" />
       </Helmet>
@@ -153,8 +241,12 @@ const Store = () => {
           <p className="welcome-textstore">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
         </div>
         <div className="button-groupstore">
-          <button className="btnstore btn-deletestore">Xoá</button>
-          <button className="btnstore btn-approvestore">Hủy chuyển đổi</button>
+          <button className="btnstore btn-deletestore" onClick={handleLockSelectedStores}>
+            Khóa cửa hàng
+          </button>
+          <button className="btnstore btn-approvestore" onClick={handleUnlockSelectedStores}>
+            Mở cửa hàng
+          </button>
           <div className="filter-icon-containerstore">
             <FiSliders className="filter-iconstore" />
           </div>
@@ -215,7 +307,7 @@ const Store = () => {
               <tr key={store._id}>
                 <td>
                   <label className="custom-checkboxstore">
-                    <input type="checkbox" className="checkboxstore" />
+                    <input type="checkbox" className="checkboxstore" checked={selectedStores.includes(store._id)} onChange={() => handleCheckboxChange(store._id)} />
                     <span className="checkmarkstore"></span>
                   </label>
                 </td>
