@@ -8,6 +8,7 @@ import Overview from "./components/Overview/Overview";
 import Cookies from "js-cookie";
 import Order from "./components/Order/Order";
 import Product from "./components/Product/Product";
+import ChartsAndReports from "./components/ChartsAndReports/ChartsAndReports";
 import { useSelector, useDispatch } from "react-redux";
 import { setCredentials } from "../src/Redux/Slice/userSlice";
 
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="/order" element={accessToken  ? <Order /> : <Navigate to="/" />} />
           <Route path="/overview" element={accessToken  ? <Overview /> : <Navigate to="/" />} />
           <Route path="/product" element={accessToken  ? <Product /> : <Navigate to="/" />} />
+          <Route path="/chartsandreports" element={accessToken  ? <ChartsAndReports /> : <Navigate to="/" />} />
         </Routes>
       </div>
     </Router>

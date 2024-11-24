@@ -216,7 +216,7 @@ const Overview = () => {
     <div className="overview-wrapper">
       <div className="welcomedate">
         <div>
-          <p className="content-title">Dashboard</p>
+          <p className="content-title">Overview</p>
           <p className="welcome-text">Hi, {user?.fullName || "Samantha"}. Welcome back to NOM Admin!</p>
         </div>
 

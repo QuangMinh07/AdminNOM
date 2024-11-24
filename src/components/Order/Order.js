@@ -86,7 +86,7 @@ const Order = () => {
       </Helmet>
       <div className="header">
         <div>
-          <h1 className="title">User</h1>
+          <h1 className="title">Order</h1>
           <p className="welcome-textuser">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
         </div>
       </div>

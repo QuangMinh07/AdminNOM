@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 import Order from "../Order/Order";
 import Overview from "../Overview/Overview";
 import Product from "../Product/Product";
+import ChartsAndReports from "../ChartsAndReports/ChartsAndReports";
 
 const Dashboard = () => {
   const [isDashboardExpanded, setIsDashboardExpanded] = useState(false);
@@ -61,6 +62,8 @@ const Dashboard = () => {
         return <Order />;
       case "overview":
         return <Overview />;
+      case "chartsandreports":
+        return <ChartsAndReports />;
       case "product":
         return <Product />;
       default:
@@ -121,10 +124,10 @@ const Dashboard = () => {
                   </div>
                 </li>
                 <li className="sidebar-item indent">
-                  <a href="#">
+                  <div onClick={() => handleContentChange("chartsandreports")}>
                     <FontAwesomeIcon icon={faChartPie} className="iconphu" />
                     <span style={{ marginLeft: "10px" }}>Charts and Reports</span>
-                  </a>
+                  </div>
                 </li>
                 <li className="sidebar-item indent">
                   <a href="#">
