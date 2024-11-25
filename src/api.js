@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 const api = axios.create({
   // baseURL: 'http://localhost:5000',
   baseURL: 'https://nom-9xxu.onrender.com',
-  // Địa chỉ API của bạn
 });
 
 // Sử dụng Axios Interceptor để tự động thêm token vào headers
