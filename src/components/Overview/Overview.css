@@ -122,7 +122,7 @@
   height: 280px;
 }
 
-.chart-container1 {
+.large-line-chart {
   background-color: #fff;
   padding: 25px;
   border-radius: 20px;
@@ -184,7 +184,7 @@
 
 .large-line-chart {
   grid-column: span 4; /* Biểu đồ đường chiếm 4 cột */
-  margin-left: 50px;
+  margin-left: 20px;
 }
 
 .bieudo {

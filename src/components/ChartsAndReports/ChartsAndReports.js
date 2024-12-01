@@ -274,7 +274,7 @@ const ChartsAndReports = () => {
 
       <div className="chart-line-chart">
         {/* Charts Section */}
-        <div className="chart-container">
+        <div className="chart-containerChartAnhReports">
           <h3 className="chart-title">Doanh thu theo danh mục sản phẩm</h3>
           <div className="doughnut-chart">
             <Doughnut

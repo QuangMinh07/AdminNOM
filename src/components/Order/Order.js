@@ -18,6 +18,8 @@ const Order = () => {
   const [filterStatus, setFilterStatus] = useState(null); // Lọc theo trạng thái (online, offline)
   const [showStatusFilter, setShowStatusFilter] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null); // Món ăn được chọn để hiển thị chi tiết
+  const [selectedOrders, setSelectedOrders] = useState([]); // Trạng thái các đơn hàng được chọn
+  const [isLoading, setIsLoading] = useState(false); // Trạng thái loading
 
   const openOrderDetail = (order) => {
     setSelectedOrder(order); // Mở chi tiết món ăn
@@ -79,15 +81,68 @@ const Order = () => {
     setShowStatusFilter(false); // Đóng menu lọc
   };
 
+  const handleSelectOrder = (orderId) => {
+    setSelectedOrders((prev) => (prev.includes(orderId) ? prev.filter((id) => id !== orderId) : [...prev, orderId]));
+  };
+
+  const handleSelectAllOrders = (isChecked) => {
+    if (isChecked) {
+      setSelectedOrders(orders.map((order) => order.orderId));
+    } else {
+      setSelectedOrders([]);
+    }
+  };
+
+  const sendNotifications = async () => {
+    if (selectedOrders.length === 0) {
+      alert("Vui lòng chọn ít nhất một đơn hàng để gửi thông báo.");
+      return;
+    }
+
+    const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
+    setIsLoading(true); // Hiển thị loading
+
+    try {
+      await api.post(
+        "/v1/admin/send-notification",
+        { orderIds: selectedOrders },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Gửi token trong headers
+          },
+        }
+      );
+      alert("Thông báo đã được gửi thành công!");
+      setSelectedOrders([]); // Reset danh sách đơn hàng được chọn
+      // Gọi lại hàm fetchOrders để cập nhật danh sách đơn hàng
+      fetchOrders(currentPage);
+    } catch (error) {
+      console.error("Lỗi khi gửi thông báo:", error.message);
+      alert("Đã xảy ra lỗi khi gửi thông báo.");
+    } finally {
+      setIsLoading(false); // Ẩn loading sau khi API hoàn tất
+    }
+  };
+
   return (
     <div className="user-container">
       <Helmet>
         <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap" rel="stylesheet" />
       </Helmet>
+      {isLoading && (
+        <div className="loading-overlayOrder">
+          <div className="spinnerOrder"></div>
+        </div>
+      )}
       <div className="header">
         <div>
           <h1 className="title">Order</h1>
           <p className="welcome-textuser">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
+        </div>
+        <div className="button-group">
+          <button className="btn btn-deleteuser" onClick={sendNotifications}>
+            Gửi thông báo
+          </button>
         </div>
       </div>
       <table className="user-table">
@@ -95,7 +150,7 @@ const Order = () => {
           <tr>
             <th>
               <label className="custom-checkbox">
-                <input type="checkbox" className="checkbox" />
+                <input type="checkbox" className="checkbox" checked={selectedOrders.length === orders.length && orders.length > 0} onChange={(e) => handleSelectAllOrders(e.target.checked)} />
                 <span className="checktitle"></span>
               </label>
             </th>
@@ -139,12 +194,12 @@ const Order = () => {
               <tr key={order._id}>
                 <td>
                   <label className="custom-checkbox">
-                    <input type="checkbox" className="checkbox" />
+                    <input type="checkbox" className="checkbox" checked={selectedOrders.includes(order.orderId)} onChange={() => handleSelectOrder(order.orderId)} />
                     <span className="checkmark"></span>
                   </label>
                 </td>
                 <td>{(currentPage - 1) * 10 + index + 1}</td>
-                <td>{order.orderId}</td>
+                <td style={{ color: order.isNotificationSent ? "red" : "inherit" }}>{order.orderId}</td>
                 <td>{order.user?.fullName || "N/A"}</td>
                 <td>{order.totalAmount} VND</td>
                 <td>{new Date(order.orderDate).toLocaleDateString()}</td>

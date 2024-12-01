@@ -118,7 +118,7 @@ const Overview = () => {
         if (response.data) {
           // Lấy tổng số đơn hàng và đơn hàng hủy
           const totalOrderCount = response.data.totalOrdersCount;
-          const totalCanceledOrders = response.data.allOrdersDetails.filter((order) => order.orderStatus === "Canceled").length;
+          const totalCanceledOrders = response.data.allOrdersDetails.filter((order) => order.orderStatus === "Cancelled").length;
 
           setTotalOrders(totalOrderCount);
           setCanceledOrders(totalCanceledOrders);
@@ -298,7 +298,7 @@ const Overview = () => {
         </div>
 
         {/* Biểu đồ Doanh thu tất cả cửa hàng */}
-        <div className="chart-container1 large-line-chart">
+        <div className="chart-containerOverview1 large-line-chart">
           <h2>Doanh thu tất cả cửa hàng</h2>
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={revenueData} margin={{ top: 15, right: 20, left: 10, bottom: 5 }}>

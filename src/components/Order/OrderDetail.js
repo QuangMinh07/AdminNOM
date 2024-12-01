@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./OrderDetail.css";
+import api from "../../api"; // Import module API của bạn
 
 const OrderDetail = ({ oderDetail, onClose }) => {
+  const [review, setReview] = useState(null); // State lưu thông tin đánh giá
+  const [loadingReview, setLoadingReview] = useState(false); // State để hiển thị trạng thái tải
+
+  useEffect(() => {
+    if (oderDetail?.orderId) {
+      fetchReview(oderDetail.orderId); // Gọi API để lấy thông tin đánh giá
+    }
+  }, [oderDetail]);
+
+  const fetchReview = async (orderId) => {
+    setLoadingReview(true);
+    try {
+      const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
+      const response = await api.get(`/v1/admin/get-review/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setReview(response.data.review); // Lưu dữ liệu đánh giá vào state
+    } catch (error) {
+      console.error("Lỗi khi lấy thông tin đánh giá:", error.message);
+      setReview(null); // Nếu không có đánh giá, để null
+    } finally {
+      setLoadingReview(false); // Tắt trạng thái tải
+    }
+  };
+
   if (!oderDetail) return null;
 
   // Hàm định dạng giá tiền
   const formatCurrency = (amount) => {
-    return `${amount.toLocaleString("vi-VN")} VNĐ`;
+    return `${amount.toLocaleString("vi-VN")} `;
   };
 
   return (
@@ -72,6 +100,8 @@ const OrderDetail = ({ oderDetail, onClose }) => {
               <th>Thông tin món ăn</th>
               <th>Số lượng</th>
               <th>Giá</th>
+              <th>Thông tin Combo</th>
+              <th>Giá tiền Combo</th>
             </tr>
           </thead>
           <tbody>
@@ -80,38 +110,55 @@ const OrderDetail = ({ oderDetail, onClose }) => {
                 <td>{item.foodName}</td>
                 <td>{item.quantity}</td>
                 <td>{formatCurrency(item.price)} VND</td>
-                {item.combos?.foods?.length > 0 && (
-                  <div className="combo-details">
-                    <p>
-                      <strong>Thông tin Combo:</strong>
-                    </p>
-                    <ul>
-                      {item.combos.foods.map((combo, comboIndex) => (
-                        <li key={comboIndex}>
-                          {combo.foodName} - {formatCurrency(combo.price)} VND
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                <td>
+                  {item.combos?.foods?.length > 0 && (
+                    <div className="combo-details">
+                      <ul>
+                        {item.combos.foods.map((combo, comboIndex) => (
+                          <li key={comboIndex}>{combo.foodName}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </td>
+                <td>
+                  {item.combos?.foods?.length > 0 && (
+                    <div className="combo-details">
+                      <ul>
+                        {item.combos.foods.map((combo, comboIndex) => (
+                          <li key={comboIndex}>{formatCurrency(combo.price)} VND</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
         <p className="danhgia">
-          <strong>Điểm thưởng:</strong> {oderDetail.user?.loyaltyPoints || "không có"}
+          <strong>Điểm thưởng:</strong> {oderDetail.loyaltyPointsUsed || "không có"}
         </p>
         <p className="tongthanhtoan">
           <strong>
             Tổng thanh toán:<span style={{ color: "red", fontWeight: "bold", paddingLeft: 10 }}>{formatCurrency(oderDetail.totalAmount || 0)} VNĐ</span>
           </strong>
         </p>
-        <p className="danhgia">
-          <strong>Số sao đánh giá:</strong> <strong>không có</strong>
-        </p>
-        <p className="danhgia">
-          <strong>Thông tin đánh giá:</strong> <strong>không có</strong>
-        </p>
+        <h3 className="section-header">Đánh giá:</h3>
+        {loadingReview ? (
+          <p>Đang tải thông tin đánh giá...</p>
+        ) : review ? (
+          <div className="danhgia">
+            <p>
+              <strong>Số sao đánh giá:</strong> {review.rating}
+            </p>
+            <p>
+              <strong>Bình luận:</strong> {review.comment}
+            </p>
+          </div>
+        ) : (
+          <p>Không có đánh giá cho đơn hàng này.</p>
+        )}
       </div>
     </div>
   );
