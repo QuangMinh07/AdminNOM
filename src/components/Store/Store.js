@@ -196,6 +196,7 @@ const Store = () => {
       storeName: store.storeName,
       productCount: store.productCount,
       storeAddress: store.storeAddress,
+      bankAccount: store.bankAccount,
     });
 
     setModalUserDetailIsOpen(true);
@@ -364,8 +365,12 @@ const Store = () => {
                 <span className="stylechung">{selectedDetailUser.productCount}</span>
               </p>
               <p>
-                <span className="thongtinnguoidung1store">Mô Hình Kinh Doanh </span>
+                <span className="thongtinnguoidung1store">Mô hình kinh doanh </span>
                 <span className="stylechung">{selectedDetailUser.businessType}</span>
+              </p>
+              <p>
+                <span className="thongtinnguoidung1store">Tài khoản ngân hàng </span>
+                <span className="stylechung">{selectedDetailUser.bankAccount}</span>
               </p>
             </div>
           </div>
