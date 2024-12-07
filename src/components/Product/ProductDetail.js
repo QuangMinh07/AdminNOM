@@ -24,7 +24,7 @@ const ProductDetail = ({ foodDetail, onClose, onDelete, onWarn }) => {
         </p>
         <p>
           <strong>Cửa hàng:</strong>
-          <span className="store-name">{foodDetail.store || "N/A"}</span>
+          <span className="store-name">{foodDetail.store.storeName || "N/A"}</span>
         </p>
         <p>
           <strong>Giá:</strong> {foodDetail.price || "N/A"} VND

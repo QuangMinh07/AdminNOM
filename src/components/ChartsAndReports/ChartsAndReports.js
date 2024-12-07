@@ -287,7 +287,7 @@ const ChartsAndReports = () => {
               }}
             />
             <div className="chart-center">
-              <p>{storeRevenueData.totalRevenue || "Loading..."}</p>
+              <p>{storeRevenueData.totalRevenue.toLocaleString("en-US")}</p>
             </div>
           </div>
           <div className="categories">

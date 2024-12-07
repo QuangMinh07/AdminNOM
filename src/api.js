@@ -3,8 +3,8 @@ import Cookies from 'js-cookie';
 
 // Tạo instance axios
 const api = axios.create({
-  // baseURL: 'http://localhost:5000',
-  baseURL: 'https://nom-9xxu.onrender.com',
+  baseURL: 'http://localhost:5000',
+  // baseURL: 'https://nom-9xxu.onrender.com',
 });
 
 // Sử dụng Axios Interceptor để tự động thêm token vào headers

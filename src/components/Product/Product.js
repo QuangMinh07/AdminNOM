@@ -47,6 +47,93 @@ const Product = () => {
     setSelectedFood(null); // Đóng chi tiết món ăn
   };
 
+  const handleWarn = async (food) => {
+    if (!food || !food._id || !food.storeId) {
+      alert("Thông tin món ăn không đầy đủ để gửi cảnh báo.");
+      return;
+    }
+
+    if (window.confirm(`Bạn có chắc chắn muốn gửi cảnh báo cho món ăn "${food.foodName}"?`)) {
+      setIsLoading(true); // Bật trạng thái loading
+      try {
+        const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
+        if (!token) {
+          throw new Error("Token không tồn tại");
+        }
+
+        // Gửi yêu cầu đến API
+        const response = await api.post(
+          "v1/admin/send-warning-notification",
+          {
+            storeId: food.storeId, // ID cửa hàng
+            foodId: food._id, // ID món ăn
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Gửi token trong headers
+            },
+          }
+        );
+
+        if (response.data.success) {
+          alert(`Đã gửi cảnh báo thành công cho món ăn "${food.foodName}".`);
+        } else {
+          alert(response.data.message || "Có lỗi xảy ra khi gửi cảnh báo.");
+        }
+      } catch (error) {
+        console.error("Lỗi khi gửi cảnh báo:", error.message);
+        alert("Có lỗi xảy ra khi gửi cảnh báo. Vui lòng thử lại sau.");
+      } finally {
+        setIsLoading(false); // Tắt trạng thái loading
+      }
+    }
+  };
+
+  const handleWarnSelected = async () => {
+    if (selectedFoodIds.length === 0) {
+      alert("Vui lòng chọn ít nhất một món ăn để gửi cảnh báo!");
+      return;
+    }
+
+    if (window.confirm(`Bạn có chắc chắn muốn gửi cảnh báo cho ${selectedFoodIds.length} món ăn đã chọn không?`)) {
+      setIsLoading(true); // Bật trạng thái loading
+      try {
+        const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
+        if (!token) {
+          throw new Error("Token không tồn tại");
+        }
+
+        // Lọc ra danh sách món ăn đã chọn từ `foods`
+        const foodsToWarn = foods.filter((food) => selectedFoodIds.includes(food._id));
+
+        // Gửi cảnh báo cho từng món ăn đã chọn
+        await Promise.all(
+          foodsToWarn.map((food) =>
+            api.post(
+              "v1/admin/send-warning-notification",
+              {
+                storeId: food.storeId, // ID cửa hàng
+                foodId: food._id, // ID món ăn
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`, // Gửi token trong headers
+                },
+              }
+            )
+          )
+        );
+
+        alert("Đã gửi cảnh báo thành công cho các món ăn đã chọn!");
+      } catch (error) {
+        console.error("Lỗi khi gửi cảnh báo:", error.message);
+        alert("Có lỗi xảy ra khi gửi cảnh báo. Vui lòng thử lại sau.");
+      } finally {
+        setIsLoading(false); // Tắt trạng thái loading
+      }
+    }
+  };
+
   const handleDelete = useCallback(
     async (food) => {
       if (!food || !food._id) {
@@ -112,10 +199,6 @@ const Product = () => {
     }
   }, [selectedFoodIds, setFoods]);
 
-  const handleWarn = (food) => {
-    console.log("Sending warning for food:", food.foodName);
-  };
-
   // API để lấy danh sách món ăn
   const fetchFoods = useCallback(
     async (page = 1) => {
@@ -139,8 +222,17 @@ const Product = () => {
           },
         });
 
+        console.log("Response from API:", response.data);
+
         if (response.data.foods) {
-          setFoods(response.data.foods); // Lưu danh sách món ăn vào state
+          const foodsWithStoreId = response.data.foods.map((food) => ({
+            ...food,
+            storeId: food.store?.storeId, // Đảm bảo lấy `storeId` từ `store.storeId`
+          }));
+
+          console.log("Processed Foods Data:", foodsWithStoreId);
+
+          setFoods(foodsWithStoreId); // Lưu danh sách món ăn với storeId vào state
           setTotalPages(response.data.totalPages); // Cập nhật tổng số trang
           setCurrentPage(response.data.currentPage); // Cập nhật trang hiện tại
         } else {
@@ -192,7 +284,9 @@ const Product = () => {
           <button className="btnstore btn-deletestore" onClick={handleDeleteSelected}>
             Xoá
           </button>
-          <button className="btnstore btn-approvestore">Gửi cảnh báo</button>
+          <button className="btnstore btn-approvestore" onClick={handleWarnSelected}>
+            Gửi cảnh báo
+          </button>
           <div className="filter-icon-containerstore">
             <FiSliders className="filter-iconstore" />
           </div>
@@ -271,7 +365,7 @@ const Product = () => {
                 <td>{food.foodName}</td>
                 <td>{food.foodGroup}</td>
                 <td>{food.price}</td>
-                <td>{food.store}</td>
+                <td>{food.store.storeName}</td>
                 <td className="statusstore">{food.isAvailable ? <span className="status online">Đang bán</span> : <span className="status offline">Ngừng bán</span>}</td>
                 {/* <td>{food.createdAt ? moment(food.createdAt).format("DD/MM/YYYY") : "Không có ngày tạo"}</td> */}
                 <td>
