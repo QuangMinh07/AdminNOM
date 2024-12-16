@@ -136,8 +136,8 @@ const Order = () => {
       )}
       <div className="header">
         <div>
-          <h1 className="title">Order</h1>
-          <p className="welcome-textuser">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
+          <h1 className="title">Đơn Hàng</h1>
+          <p className="welcome-textuser">Chào, {user?.fullName}. Chào mừng trở lại với quản trị viên NOM!</p>
         </div>
         <div className="button-group">
           <button className="btn btn-deleteuser" onClick={sendNotifications}>

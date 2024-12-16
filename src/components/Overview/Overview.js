@@ -216,8 +216,8 @@ const Overview = () => {
     <div className="overview-wrapper">
       <div className="welcomedate">
         <div>
-          <p className="content-title">Overview</p>
-          <p className="welcome-text">Hi, {user?.fullName || "Samantha"}. Welcome back to NOM Admin!</p>
+          <p className="content-title">Tổng quan</p>
+          <p className="welcome-text">Chào, {user?.fullName || "Samantha"}. Chào mừng trở lại với quản trị viên NOM!</p>
         </div>
 
         <div className="date-filter-container">
@@ -226,7 +226,7 @@ const Overview = () => {
           </div>
           <div className="date-info">
             <p className="filter-title">Lọc thời gian</p>
-            <p className="filter-date-range">17 April 2020 - 21 May 2020</p>
+            <p className="filter-date-range">17 Tháng 4 2020 - 21 Tháng 5 2020</p>
           </div>
           <FontAwesomeIcon icon={faChevronDown} className="dropdown-icon" />
         </div>

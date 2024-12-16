@@ -11,10 +11,15 @@ import foodType5 from "../../image/foodtype5.png";
 import foodType6 from "../../image/foodtype6.png";
 import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend } from "chart.js";
 import api from "../../api"; // Import apiService thay vì axios
+import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarAlt, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
 
 const ChartsAndReports = () => {
+  const user = useSelector((state) => state.user.userInfo);
+
   const [storeRevenueData, setStoreRevenueData] = useState(null);
   const [paymentMethodRevenue, setPaymentMethodRevenue] = useState(null);
   const [revenueByMonthAndYear, setRevenueByMonthAndYear] = useState([]); // State mới cho dữ liệu doanh thu theo tháng và năm
@@ -257,6 +262,24 @@ const ChartsAndReports = () => {
 
   return (
     <div className="dashboard">
+      <div className="welcomedate">
+        <div>
+          <p className="content-title">Biểu đồ và Báo cáo</p>
+          <p className="welcome-text">Chào, {user?.fullName || "Samantha"}. Chào mừng trở lại với quản trị viên NOM!</p>
+        </div>
+
+        <div className="date-filter-container">
+          <div className="icon-wrapperoverview">
+            <FontAwesomeIcon icon={faCalendarAlt} className="calendar-iconoverview" />
+          </div>
+          <div className="date-info">
+            <p className="filter-title">Lọc thời gian</p>
+            <p className="filter-date-range">17 Tháng 4 2020 - 21 Tháng 5 2020</p>
+          </div>
+          <FontAwesomeIcon icon={faChevronDown} className="dropdown-icon" />
+        </div>
+      </div>
+
       {/* Header Cards */}
       <div className="header-cards">
         {cards.map((card, index) => (

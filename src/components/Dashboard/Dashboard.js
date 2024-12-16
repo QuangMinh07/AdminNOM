@@ -71,8 +71,8 @@ const Dashboard = () => {
           <div>
             <div className="welcomedate">
               <div>
-                <p className="content-title">Dashboard</p>
-                <p className="welcome-text">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
+                <p className="content-title">Bảng điều khiển</p>
+                <p className="welcome-text">Chào, {user?.fullName}. Chào mừng trở lại với quản trị viên NOM!</p>
               </div>
 
               <div className="date-filter-container">
@@ -81,7 +81,7 @@ const Dashboard = () => {
                 </div>
                 <div className="date-info">
                   <p className="filter-title">Lọc thời gian</p>
-                  <p className="filter-date-range">17 April 2020 - 21 May 2020</p>
+                  <p className="filter-date-range">17 Tháng 4 2020 - 21 Tháng 5 2020</p>
                 </div>
                 <FontAwesomeIcon icon={faChevronDown} className="dropdown-icon" />
               </div>
@@ -89,7 +89,7 @@ const Dashboard = () => {
 
             {/* Dashboard Content */}
             <div className="content">
-              <button className="get-started-btn">Get started</button>
+              <button className="get-started-btn">Bắt đầu ngay</button>
             </div>
           </div>
         );
@@ -111,7 +111,7 @@ const Dashboard = () => {
             <li className={`sidebar-item ${isDashboardExpanded ? "active" : ""}`} onClick={toggleDashboardItems}>
               <div onClick={() => handleContentChange("dashboard")}>
                 <FontAwesomeIcon icon={faHouse} className="iconchinh" />
-                <span className="textchinh">Dashboard</span>
+                <span className="textchinh">Bảng điều khiển</span>
               </div>
             </li>
 
@@ -120,19 +120,19 @@ const Dashboard = () => {
                 <li className="sidebar-item indent">
                   <div onClick={() => handleContentChange("overview")}>
                     <FontAwesomeIcon icon={faChartBar} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}> Overview</span>
+                    <span style={{ marginLeft: "10px" }}>Tổng quan</span>
                   </div>
                 </li>
                 <li className="sidebar-item indent">
                   <div onClick={() => handleContentChange("chartsandreports")}>
                     <FontAwesomeIcon icon={faChartPie} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}>Charts and Reports</span>
+                    <span style={{ marginLeft: "10px" }}>Biểu đồ và Báo cáo</span>
                   </div>
                 </li>
                 <li className="sidebar-item indent">
                   <a href="#">
                     <FontAwesomeIcon icon={faFileInvoiceDollar} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}>Revenue & Reports</span>
+                    <span style={{ marginLeft: "10px" }}>Doanh thu và Báo cáo</span>
                   </a>
                 </li>
               </>
@@ -140,7 +140,7 @@ const Dashboard = () => {
             <li className={`sidebar-item ${isManagementExpanded ? "active" : ""}`} onClick={toggleManagementItems}>
               <a href="#">
                 <FontAwesomeIcon icon={faCog} className="iconchinh" />
-                <span className="textchinh">Management </span>
+                <span className="textchinh">Quản lý </span>
               </a>
             </li>
             {isManagementExpanded && (
@@ -148,37 +148,37 @@ const Dashboard = () => {
                 <li className="sidebar-item indent">
                   <div onClick={() => handleContentChange("store")}>
                     <FontAwesomeIcon icon={faStore} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}>Store </span>
+                    <span style={{ marginLeft: "10px" }}>Cửa hàng </span>
                   </div>
                 </li>
                 <li className="sidebar-item indent">
                   <div onClick={() => handleContentChange("order")}>
                     <FontAwesomeIcon icon={faShoppingCart} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}>Order </span>
+                    <span style={{ marginLeft: "10px" }}>Đơn hàng </span>
                   </div>
                 </li>
                 <li className="sidebar-item indent">
                   <div onClick={() => handleContentChange("product")}>
                     <FontAwesomeIcon icon={faBox} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}>Product </span>
+                    <span style={{ marginLeft: "10px" }}>Sản Phẩm </span>
                   </div>
                 </li>
                 <li className="sidebar-item indent">
                   <div onClick={() => handleContentChange("user")}>
                     <FontAwesomeIcon icon={faUser} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}>User </span>
+                    <span style={{ marginLeft: "10px" }}>Người dùng </span>
                   </div>
                 </li>
                 <li className="sidebar-item indent">
                   <a href="#">
                     <FontAwesomeIcon icon={faBell} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}>Notification </span>
+                    <span style={{ marginLeft: "10px" }}>Thông báo </span>
                   </a>
                 </li>
                 <li className="sidebar-item indent">
                   <a href="#">
                     <FontAwesomeIcon icon={faEnvelope} className="iconphu" />
-                    <span style={{ marginLeft: "10px" }}>Support & Communication</span>
+                    <span style={{ marginLeft: "10px" }}>Hỗ trợ & Giao tiếp</span>
                   </a>
                 </li>
               </>
@@ -192,7 +192,7 @@ const Dashboard = () => {
         {/* Top Bar */}
         <div className="top-bar">
           <div className={`search-container ${content === "dashboard" ? "" : "other-page"}`}>
-            <input type="text" className={`search-input ${content === "dashboard" ? "" : "other-page"}`} placeholder="Search here" />
+            <input type="text" className={`search-input ${content === "dashboard" ? "" : "other-page"}`} placeholder="Tìm kiếm tại đây" />
             <FontAwesomeIcon icon={faSearch} className="search-icon" />
           </div>
 

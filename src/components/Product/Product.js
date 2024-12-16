@@ -277,8 +277,8 @@ const Product = () => {
       </Helmet>
       <div className="headerstore">
         <div>
-          <h1 className="titlestore">Product</h1>
-          <p className="welcome-textstore">Hi, {user?.fullName}. Welcome back to NOM Admin!</p>
+          <h1 className="titlestore">Sản Phẩm</h1>
+          <p className="welcome-textstore">Chào, {user?.fullName}. Chào mừng trở lại với quản trị viên NOM!</p>
         </div>
         <div className="button-groupstore">
           <button className="btnstore btn-deletestore" onClick={handleDeleteSelected}>
