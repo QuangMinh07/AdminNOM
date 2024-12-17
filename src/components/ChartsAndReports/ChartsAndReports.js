@@ -149,8 +149,15 @@ const ChartsAndReports = () => {
     },
   };
 
+  const paymentMethodLabels = {
+    Cash: "Tiền mặt",
+    Card: "Thẻ",
+    Payos: "Payos",
+    Bank: "Ngân hàng",
+  };
+
   const data1 = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"], // Các tháng
+    labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"], // Các tháng
     datasets: ["Cash", "Card", "Payos", "Bank"].map((paymentMethod) => {
       // Kiểm tra nếu phương thức thanh toán có trong dữ liệu
       const revenueData = paymentMethodRevenue.revenueByPaymentMethod[paymentMethod] || []; // Nếu không có dữ liệu, gán là mảng rỗng
@@ -165,7 +172,7 @@ const ChartsAndReports = () => {
       });
 
       return {
-        label: paymentMethod,
+      label: paymentMethodLabels[paymentMethod], // Hiển thị tên bằng tiếng Việt
         data: monthlyRevenue,
         borderColor: paymentMethod === "Cash" ? "#A700FF" : paymentMethod === "Card" ? "#FF5252" : paymentMethod === "Payos" ? "#3CD856" : "#FFC107", // Màu sắc cho từng phương thức
         backgroundColor: paymentMethod === "Cash" ? "#A700FF" : paymentMethod === "Card" ? "#FF5252" : paymentMethod === "Payos" ? "#3CD856" : "#FFC107", // Màu nền
